@@ -41,7 +41,7 @@ module.exports = {
     Detalle: FUNCION QUE GENERA EL MENSAJE GENERICO DE ERROR CUANDO EXISE UNA EXCEPCIÓN.
     */
     respuestaExcepcion(error) {
-        return this.estado(this.COD_ERROR, this.MSG_ERROR, error)
+        return this.estado(this.COD_ERROR, this.MSG_ERROR, error + "")
     },
 
     /*
