@@ -1,16 +1,26 @@
 const comunes = require("../config/comunes")
 const modelo = require("../models/pago")
 
+<<<<<<< HEAD
 exports.consultar = (req, res) => {
     const {inicio, fin} = req.body
     modelo
         .consultar(inicio, fin)
         .then(resultados => {
             return res.send(comunes.respuestaConsulta(resultados))
+=======
+exports.cargar = (req, res) => {
+    const { contrato, fecha, periodo, valor } = req.body
+    modelo
+        .cargar(contrato, fecha, periodo, valor)
+        .then(() => {
+            return res.send(comunes.respuestaCreacion())
+>>>>>>> fd0a4b21a85f3070db36a573b07cb91509cf3f0b
         })
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
+<<<<<<< HEAD
 },
 
 exports.consultarCliente = (req, res) => {
@@ -39,3 +49,6 @@ exports.consultarContrato = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+=======
+}
+>>>>>>> fd0a4b21a85f3070db36a573b07cb91509cf3f0b
