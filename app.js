@@ -7,7 +7,6 @@ const routeContrato = require("../hydra-api/router/contrato")
 const routeCliente = require("../hydra-api/router/cliente")
 const routeBeneficiario = require("../hydra-api/router/beneficiario")
 
-const routePago = require("../hydra-api/router/pago")
 //Variables
 const app = express()
 
@@ -32,7 +31,6 @@ app.use(routeUsuario)
 app.use(routeContrato)
 app.use(routeCliente)
 app.use(routeBeneficiario)
-app.use(routePago)
 
 
 app.listen(port, () => {
