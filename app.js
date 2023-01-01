@@ -3,6 +3,9 @@ const express = require("express")
 require("dotenv").config()
 const bodyParser = require("body-parser")
 const routeUsuario = require("../hydra-api/router/usuario")
+const routeContrato = require("../hydra-api/router/contrato")
+const routeCierreContrato = require("./router/cierre_Contrato")
+const routePago = require("./router/pago")
 //Variables
 const app = express()
 
@@ -24,7 +27,9 @@ app.use(
 
 //Aqui van las rutas
 app.use(routeUsuario)
-
+app.use(routeContrato)
+app.use(routeCierreContrato)
+app.use(routePago)
 
 app.listen(port, () => {
     console.log(`La aplicación esta en linea por el puerto ${port}`)
