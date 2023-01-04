@@ -3,6 +3,7 @@ const express = require("express")
 require("dotenv").config()
 const bodyParser = require("body-parser")
 const routeUsuario = require("../hydra-api/router/usuario")
+const routeNotificacion = require("../hydra-api/router/notificacion")
 //Variables
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(
 
 //Aqui van las rutas
 app.use(routeUsuario)
+app.use(routeNotificacion)
 
 
 app.listen(port, () => {
