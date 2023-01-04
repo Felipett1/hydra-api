@@ -3,6 +3,6 @@ const controller = require("../controllers/beneficiario")
 const router = express.Router()
 const path = '/beneficiario'
 
-router.put(path, controller.crear)
+router.post(path, controller.crear)
 
 module.exports = router
