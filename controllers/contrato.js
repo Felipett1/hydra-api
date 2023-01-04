@@ -27,12 +27,10 @@ exports.consultarPorCliente = (req, res) => {
 
 exports.consultarPorId = (req, res) => {
     const {id} = req.body
-    console.log("El dato ingresado es: " + id)
     modelo
         .consultarPorId(id)
         .then(resultados => {
             return res.send(comunes.respuestaConsulta(resultados))
-            //console.log("El dato ingresado es: " + req.params.id)
         })
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))

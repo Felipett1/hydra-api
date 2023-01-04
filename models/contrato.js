@@ -1,7 +1,6 @@
 const conexion = require("../config/db");
 
 module.exports = {
-
     async consultar() {
         const resultados = await conexion.query(`select * from contrato`);
         return resultados.rows;

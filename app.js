@@ -5,7 +5,10 @@ const bodyParser = require("body-parser")
 const routeUsuario = require("../hydra-api/router/usuario")
 const routeContrato = require("../hydra-api/router/contrato")
 const routeCierreContrato = require("./router/cierre_Contrato")
-const routePago = require("../hydra-api/router/pago")
+const routeCliente = require("../hydra-api/router/cliente")
+const routeBeneficiario = require("../hydra-api/router/beneficiario")
+const routeServicio = require("../hydra-api/router/servicio")
+
 //Variables
 const app = express()
 
@@ -28,8 +31,10 @@ app.use(
 //Aqui van las rutas
 app.use(routeUsuario)
 app.use(routeContrato)
+app.use(routeCliente)
 app.use(routeCierreContrato)
-app.use(routePago)
+app.use(routeBeneficiario)
+app.use(routeServicio)
 
 app.listen(port, () => {
     console.log(`La aplicación esta en linea por el puerto ${port}`)
