@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const conexion = require("../config/db");
 
 module.exports = {
@@ -15,15 +14,9 @@ module.exports = {
         const resultados = await conexion.query("Select p.secuencia, p.contrato, p.fecha, p.periodo, p.valor from pago p, contrato c where p.contrato = c.id and c.cliente = $1 and (fecha > $2  and fecha < $3)", [cliente, inicio, fin]);
         return resultados.rows;
     },
-=======
-const conexion = require("../config/db")
-
-module.exports = {
-
     async cargar(contrato, fecha, periodo, valor) {
         const resultados = await conexion.query(`insert into pago (contrato, fecha, periodo, valor)
          values ($1, $2, $3, $4)` , [contrato, fecha, periodo, valor]);
         return resultados.rows;
     }
->>>>>>> fd0a4b21a85f3070db36a573b07cb91509cf3f0b
 }
