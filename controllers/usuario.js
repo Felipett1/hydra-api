@@ -7,9 +7,9 @@ exports.autenticar = (req, res) => {
         .autenticar(usuario, clave)
         .then((resultado) => {
             if (resultado) {
-                resultado = comunes.DTL_AUTENTICACION_EXITOSO
+                resultado = comunes.MSG_EXITOSO
             } else {
-                resultado = comunes.DTL_AUTENTICACION_FALLIDO
+                resultado = comunes.DTL_SIN_RESULTADOS
             }
             return res.send(comunes.respuestaConsulta(resultado))
         })

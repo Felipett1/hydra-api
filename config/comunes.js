@@ -44,14 +44,14 @@ module.exports = {
 		}
 	},
 
-	/*
-	Autor: Felipe Triviño
-	Fecha: 05/10/222
-	Detalle: FUNCION QUE GENERA EL MENSAJE GENERICO DE ERROR CUANDO EXISE UNA EXCEPCIÓN.
-	*/
-	respuestaExcepcion(error) {
-		return this.estado(this.COD_ERROR, this.MSG_ERROR, error)
-	},
+    /*
+    Autor: Felipe Triviño
+    Fecha: 05/10/222
+    Detalle: FUNCION QUE GENERA EL MENSAJE GENERICO DE ERROR CUANDO EXISE UNA EXCEPCIÓN.
+    */
+    respuestaExcepcion(error) {
+        return this.estado(this.COD_ERROR, this.MSG_ERROR, error + "")
+    },
 
 	/*
 	Autor: Felipe Triviño
