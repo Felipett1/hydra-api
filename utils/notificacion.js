@@ -21,7 +21,7 @@ exports.enviarCorreo = async (para, tipoNotificacion, cargaUtil) => {
             to: para,
             subject: validarAsunto(tipoNotificacion),
             html: validarNotificacion(tipoNotificacion)
-        })
+        }) 
         console.log("Mensaje enviado con el id: " + info.messageId)
         return info.messageId
     } catch (error) {
