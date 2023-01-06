@@ -19,8 +19,10 @@ module.exports = {
         return resultado.rows;
         //console.log(resultado)
     },
+
+    //Consulta para el reporte de servicios en un periodo de tiempo
+    async consultarServicio(inicio , fin) {
+        const resultados = await conexion.query("select s.contrato,t.nombre,s.fecha_inicial,s.detalle_inicial,s.fecha_final,s.detalle_final from servicio s, contrato c, tipo_servicio t where (fecha_inicial >= $1 and fecha_inicial <= $2)", [inicio, fin]);
+        return resultados.rows;
+    }
 } 
-
-
-
-

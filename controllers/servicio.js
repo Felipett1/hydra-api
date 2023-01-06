@@ -37,3 +37,15 @@ exports. crear = (req, res) => {
         })
 }
 
+exports.consultarServicio = (req, res) => {
+    const {inicio, fin} = req.body
+    modelo
+        .consultarServicio(inicio, fin)
+        .then(resultados => {
+            return res.send(comunes.respuestaConsulta(resultados))
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}
+
