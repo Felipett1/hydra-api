@@ -53,3 +53,14 @@ exports.consultarContrato = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+exports.modificarPago= (req, res) => {
+    const {valor,secuencia} = req.body
+    modelo
+        .modificarPago(valor,secuencia)
+        .then(() => {
+            return res.send(comunes.respuestaModificacion())       
+            })   
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}

@@ -7,5 +7,6 @@ router.get(path, controller.consultar)
 router.get(path + '/cliente', controller.consultarCliente)
 router.get(path + '/contrato', controller.consultarContrato)
 router.post(path, controller.cargar)
+router.put(path + '/valor', controller.modificarPago)
 
 module.exports = router

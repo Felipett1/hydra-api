@@ -17,3 +17,14 @@ exports.autenticar = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+exports.modificarClave = (req, res) => {
+    const {clave,id} = req.body
+    modelo
+        .modificarClave(clave,id)
+        .then(() => {
+            return res.send(comunes.respuestaModificacion())       
+            })   
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}

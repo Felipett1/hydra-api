@@ -1,6 +1,7 @@
 const comunes = require("../config/comunes")
 const notificacion = require("../utils/notificacion")
 
+
 exports.ntfPreRegistro = (req, res) => {
     const { nombre, correo, celular } = req.body
     notificacion
