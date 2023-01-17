@@ -38,9 +38,9 @@ exports.consultarPorId = (req, res) => {
 }
 
 exports.crear = (req, res) => {
-    const {id, cliente, fecha_inicio, estado, plan, valor, soporte} = req.body
+    const {id, cliente, fecha_inicio, estado, plan, valor, soporte, periodo} = req.body
     modelo
-        .crear(id, cliente, fecha_inicio, estado, plan, valor, soporte)
+        .crear(id, cliente, fecha_inicio, estado, plan, valor, soporte, periodo)
         .then(() => {
             return res.send(comunes.respuestaCreacion())
         })

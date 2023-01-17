@@ -13,8 +13,8 @@ module.exports = {
         const resultados = await conexion.query("select * from contrato where id = $1", [id]);
         return resultados.rows;
     },
-    async crear(id, cliente, fecha_inicio, estado, plan, valor, soporte) {
-        const resultados = await conexion.query("insert into contrato (id, cliente, fecha_inicio, estado, plan, valor, soporte) values($1, $2, $3, $4, $5, $6, $7)", [id, cliente, fecha_inicio, estado, plan, valor, soporte]);
+    async crear(id, cliente, fecha_inicio, estado, plan, valor, soporte, periodo) {
+        const resultados = await conexion.query("insert into contrato (id, cliente, fecha_inicio, estado, plan, valor, soporte, periodo) values($1, $2, $3, $4, $5, $6, $7, $8)", [id, cliente, fecha_inicio, estado, plan, valor, soporte, periodo]);
         return resultados.rows;
     },
     async modificarValorId(id, valor) {

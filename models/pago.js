@@ -1,4 +1,5 @@
 const conexion = require("../config/db");
+const { modificarPago } = require("../controllers/pago");
 
 module.exports = {
 
@@ -18,5 +19,11 @@ module.exports = {
         const resultados = await conexion.query(`insert into pago (contrato, fecha, periodo, valor)
          values ($1, $2, $3, $4)` , [contrato, fecha, periodo, valor]);
         return resultados.rows;
-    }
+    },
+    async modificarPago(valor,secuencia) {
+        const resultados = await conexion.query(`update pago 
+        set valor  = $1
+        where secuencia = $2` , [valor,secuencia]);
+        return resultados.rows;
+    },
 }
