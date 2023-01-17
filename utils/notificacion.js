@@ -1,6 +1,7 @@
 const fs = require('fs');
 const correo = require("../config/correo");
 const comunes = require("../config/comunes")
+const preRegistro = require("../storage/notificaciones/pre_registro")
 
 /*
 Autor: Felipe Triviño
@@ -20,8 +21,8 @@ exports.enviarCorreo = async (para, tipoNotificacion, cargaUtil) => {
             from: comunes.DE,
             to: para,
             subject: validarAsunto(tipoNotificacion),
-            html: validarNotificacion(tipoNotificacion)
-        }) 
+            html: validarNotificacion(tipoNotificacion, cargaUtil)
+        })
         console.log("Mensaje enviado con el id: " + info.messageId)
         return info.messageId
     } catch (error) {
@@ -40,28 +41,23 @@ Tipo de notificaciones:
 4 -> Solicitud de servicio
 5 -> Renovación contrato
 */
-function validarNotificacion(tipoNotificacion) {
+function validarNotificacion(tipoNotificacion, datos) {
     try {
         let data
         switch (tipoNotificacion) {
             case 1:
-                console.log('Notificación de pre registro');
-                data = fs.readFileSync('./storage/notificaciones/pre_registro.html', 'utf8');
+                data = preRegistro.mensaje(datos)
                 return data
             case 2:
-                console.log('Notificación creación de servicio');
                 data = fs.readFileSync('./storage/notificaciones/servicio.html', 'utf8');
                 return data
             case 3:
-                console.log('Notificación de ANS');
                 data = fs.readFileSync('./storage/notificaciones/ans.html', 'utf8');
                 return data
             case 4:
-                console.log('Notificación solicitud nuevo servicio');
                 data = fs.readFileSync('./storage/notificaciones/solicitud.html', 'utf8');
                 return data
             case 5:
-                console.log('Notificación de renovación');
                 data = fs.readFileSync('./storage/notificaciones/renovacion.html', 'utf8');
                 return data
             default:

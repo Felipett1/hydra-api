@@ -1,4 +1,5 @@
 const comunes = require("../config/comunes")
+const pago = require("../models/pago")
 const modelo = require("../models/pago")
 
 exports.consultar = (req, res) => {
@@ -25,6 +26,25 @@ exports.cargar = (req, res) => {
         })
 
 
+}
+
+exports.cargarMasivo = async (req, res) => {
+    const pagos = req.body.pagos
+
+    for (let i = 0; i < pagos.length; i++) {
+        //console.log(`Esta pagando el periodo : ${pagos[i].periodo} del contrato ${pagos[i].contrato} por un valor de ${pagos[i].valor}`);
+        await modelo
+            .cargar(pagos[i].contrato, pagos[i].fecha, pagos[i].periodo, pagos[i].valor)
+            .then(() => {
+                pagos[i].resultado = "Registro guardado exitosamente."
+            })
+            .catch(err => {
+                pagos[i].resultado = err + ""
+            })
+    }
+    respuesta = comunes.respuestaGenerica()
+    respuesta.resultados = pagos
+    return res.send(respuesta)
 }
 
 exports.consultarCliente = (req, res) => {

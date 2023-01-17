@@ -1,4 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+exports.mensaje = (datos) => {
+    mensaje = `
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" style="width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
 	<head>
 		<meta charset="UTF-8"/>
@@ -114,15 +116,15 @@ helvetica, arial, sans-serif;padding:0;Margin:0">
 																		<ul>
 																			<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																				<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																					<strong>Nombre: </strong> Pepito Perez</p>
+																					<strong>Nombre: </strong> ${datos.nombre}</p>
 																			</li>
 																			<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																				<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																					<strong>Telefono: </strong> 3126453487</p>
+																					<strong>Telefono: </strong> ${datos.celular}</p>
 																			</li>
 																			<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																				<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																					<strong>Correo: </strong> pepito@hotmail.com</p>
+																					<strong>Correo: </strong> ${datos.correo}</p>
 																			</li>
 																		</ul>
 																	</td>
@@ -160,11 +162,11 @@ helvetica, arial, sans-serif;padding:0;Margin:0">
 																</tr>
 																<tr style="border-collapse:collapse">
 																	<td align="center" style="padding:0;Margin:0;padding-bottom:15px;padding-top:30px">
-																		<!--[if mso]><a href="https://viewstripo.email" target="_blank" hidden> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="https://viewstripo.email" style="height:48px; v-text-anchor:middle; 
+																		<!--[if mso]><a href="https://api.whatsapp.com/send?phone=57${datos.celular}&text=¡Hola%20${datos.nombre}!%0ARecibimos%20tu%20registro%20correctamente%20y%20queremos%20contarte%20acerca%20de%20los%20servicios%20que%20ofrecemos." target="_blank" hidden> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="https://api.whatsapp.com/send?phone=57${datos.celular}&text=¡Hola%20${datos.nombre}!%0ARecibimos%20tu%20registro%20correctamente%20y%20queremos%20contarte%20acerca%20de%20los%20servicios%20que%20ofrecemos." style="height:48px; v-text-anchor:middle; 
 width:139.5px" arcsize="31%" stroke="f" fillcolor="#50a3af"> <w:anchorlock></w:anchorlock> <center style='color:#ffffff; font-family:"open sans", "helvetica neue", helvetica, arial, sans-serif; font-size:17px; font-weight:400; line-height:17px; mso-text-raise:1px'>Escribele</center> </v:roundrect></a><![endif]-->
 																		<!--[if !mso]><!-- -->
 																		<span class="msohide es-button-border" style="border-style:solid;border-color:transparent;background:#50a3af;border-width:0px;display:inline-block;border-radius:15px;width:auto;mso-hide:all">
-																			<a href="https://viewstripo.email" class="es-button es-button-1670028511777 msohide" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#ffffff;font-size:18px;border-style:solid;border-color:#50a3af;border-width:10px 20px 10px 10px;display:inline-block;background:#50a3af;border-radius:15px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;mso-hide:all">
+																			<a href="https://api.whatsapp.com/send?phone=57${datos.celular}&text=¡Hola%20${datos.nombre}!%0ARecibimos%20tu%20registro%20correctamente%20y%20queremos%20contarte%20acerca%20de%20los%20servicios%20que%20ofrecemos." class="es-button es-button-1670028511777 msohide" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#ffffff;font-size:18px;border-style:solid;border-color:#50a3af;border-width:10px 20px 10px 10px;display:inline-block;background:#50a3af;border-radius:15px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;mso-hide:all">
 																				<img src="https://zluqpe.stripocdn.email/content/guids/CABINET_c1cd551d45b343347d6efa6b89da135b/images/logo_whatsappremovebgpreview.png" alt="icon" align="absmiddle" width="51" style="display:inline-block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;vertical-align:middle;margin-right:1px"/>Escribele
 
                 </a>
@@ -278,3 +280,6 @@ width:139.5px" arcsize="31%" stroke="f" fillcolor="#50a3af"> <w:anchorlock></w:a
 		</div>
 	</body>
 </html>
+    `
+    return mensaje
+}
