@@ -1,5 +1,4 @@
 const conexion = require("../config/db");
-const { modificarPago } = require("../controllers/pago");
 
 module.exports = {
 
