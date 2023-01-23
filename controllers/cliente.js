@@ -12,3 +12,16 @@ exports.crear = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+exports.consultarPorDocumento = (req, res) => {
+    modelo
+        .consultarPorDocumento(req.params.documento)
+        .then(resultados => {
+            return res.send(comunes.respuestaConsulta(resultados))
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+
+
+
+}

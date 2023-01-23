@@ -26,3 +26,15 @@ module.exports = {
         return resultados.rows;
     }
 } 
+
+module.exports = {
+
+    async cerrarServicio( fecha_final, detalle_final , secuencia ) {
+        console.log("Verificacion de resultados")
+        const resultados = await conexion.query(` update servicio set fecha_final = $1 ,detalle_final = $2
+        where secuencia  = $3
+        `, [ fecha_final, detalle_final ,secuencia]);
+        console.log(resultados.rowCount)
+        return resultados.rowCount;     
+    },
+}

@@ -45,5 +45,10 @@ module.exports = {
         const resultados = await conexion.query(`delete from beneficiario 
         where secuencia = $1` , [secuencia]);
         return resultados.rows;
-    }
+    },
+    
+    async consultarPorSecuencia(secuencia) {
+        const resultados = await conexion.query(`select * from beneficiario where secuencia = $1`, [secuencia]);
+        return resultados.rows;
+    },
 } 

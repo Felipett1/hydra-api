@@ -10,3 +10,15 @@ module.exports = {
         
     },
     }
+    module.exports = {
+
+   
+
+        async consultarPorDocumento(Documento) {
+            const resultados = await conexion.query(`select * from cliente where Documento = $1`, [Documento]);
+            return resultados.rows;
+        },
+    
+       
+      
+    }

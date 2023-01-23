@@ -60,3 +60,17 @@ exports.eliminar = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+exports.consultarPorSecuencia = (req, res) => {
+   
+    modelo
+        .consultarPorSecuencia(req.params.secuencia)
+        .then(resultados => {
+            return res.send(comunes.respuestaConsulta(resultados))
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+
+
+
+}
