@@ -1,5 +1,6 @@
 const conexion = require("../config/db");
-const { modificarPago } = require("../controllers/pago");
+const modificarPago = require("../controllers/pago");
+const verificar = require("../utils/validacion")
 
 module.exports = {
 
@@ -26,4 +27,9 @@ module.exports = {
         where secuencia = $2` , [valor,secuencia]);
         return resultados.rows;
     },
+    // Julian Calderon, 13/01/2022, se realiza la consulta del contrato a nivel global
+    async consultarContratoGlobal(contrato) {
+        const resultados = await conexion.query(`select count (*) as periodos, sum(valor) as recaudado from pago where contrato = $1`,[contrato]);
+        return resultados.rows[0];
+    }
 }
