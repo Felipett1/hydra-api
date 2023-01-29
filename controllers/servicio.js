@@ -48,4 +48,16 @@ exports.consultarServicio = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
-
+exports.cerrarServicio = (req, res) => {
+    const { fecha_final, detalle_final , secuencia} = req.body
+   
+    modelo
+        .cerrarServicio( fecha_final, detalle_final, secuencia)
+        .then((resultado) => {
+          
+            return res.send(comunes.respuestaModificacion())
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}

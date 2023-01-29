@@ -21,6 +21,8 @@ module.exports = {
 	ASUNTO_ANS: '¡Recordatorio atención de servicio!',
 	ASUNTO_SS: '¡Se ha creado una solicitud de servicio!',
 	ASUNTO_RC: '¡Recordatorio renovación de contrato!',
+	//Correo destino notificación de pre registro
+	PARA_PR: 'felipe.trivino@coboy.com.co',
 
 	//OBJETOS COMUNES
 	estado: (codigo, mensaje, detalle) => ({ codigo, mensaje, detalle }),

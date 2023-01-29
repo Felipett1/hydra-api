@@ -8,5 +8,5 @@ router.post(path, controller.crear)
 router.put(path, controller.modificar)
 router.put(path + "/marquilla", controller.modificarMarquilla)
 router.delete(path, controller.eliminar)
-
+router.get(path + '/:secuencia', controller.consultarPorSecuencia)
 module.exports = router
