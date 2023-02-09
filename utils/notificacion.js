@@ -2,6 +2,7 @@ const fs = require('fs');
 const correo = require("../config/correo");
 const comunes = require("../config/comunes")
 const preRegistro = require("../storage/notificaciones/pre_registro")
+const recuperacion = require("../storage/notificaciones/recuperacion")
 
 /*
 Autor: Felipe Triviño
@@ -40,6 +41,7 @@ Tipo de notificaciones:
 3 -> ANS
 4 -> Solicitud de servicio
 5 -> Renovación contrato
+6 -> Recuperación de contraseña
 */
 function validarNotificacion(tipoNotificacion, datos) {
     try {
@@ -59,6 +61,9 @@ function validarNotificacion(tipoNotificacion, datos) {
                 return data
             case 5:
                 data = fs.readFileSync('./storage/notificaciones/renovacion.html', 'utf8');
+                return data
+            case 6:
+                data = recuperacion.mensaje(datos)
                 return data
             default:
                 console.log('No se reconoce el tipo de notificación')
@@ -82,6 +87,8 @@ function validarAsunto(tipoNotificacion) {
                 return comunes.ASUNTO_SS
             case 5:
                 return comunes.ASUNTO_RC
+            case 6:
+                return comunes.ASUNTO_RP
             default:
                 console.log('No se reconoce el tipo de notificación')
         }

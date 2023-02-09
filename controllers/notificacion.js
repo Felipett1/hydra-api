@@ -13,3 +13,15 @@ exports.ntfPreRegistro = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+
+exports.ntfRecuperacion = (req, res) => {
+    notificacion
+        .enviarCorreo(comunes.PARA_RP, 6, req.body)
+        .then(() => {
+            return res.send(comunes.respuestaGenerica())
+        })
+        .catch(err => {
+            console.log(err)
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}
