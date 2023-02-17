@@ -108,7 +108,7 @@ exports.consultarEstadoCliente = (req, res) => {
         .then(contrato => {
             if (!contrato) {    //Si no hay resultado en a consulta del contrato
                 console.log("no arrojo ningun resulado la consulta")
-                return res.send(comunes.respuestaExcepcion(`El cacas La consulta no arrojo resultados`))
+                return res.send(comunes.respuestaExcepcion(`No arrojo resultados`))
             } else {            //Entra si el cliente exiten en la base de datos
                 let mensualidad = verificar.valorMensual(contrato)
                 contrato.mensualidad = mensualidad

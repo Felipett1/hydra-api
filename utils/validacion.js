@@ -5,7 +5,7 @@ Autor: Julian Camilo Calderon
 */
 
 exports.valorMensual = (contrato) => {
-    const valorMensual = (contrato.valor / contrato.periodo).toFixed(2)
+    const valorMensual = (contrato.valor / contrato.cuotas).toFixed(2)
     return valorMensual
 },
 exports.estadoMora = (contrato, pagos,) => {
