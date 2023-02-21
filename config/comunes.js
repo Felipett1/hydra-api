@@ -23,7 +23,7 @@ module.exports = {
 	ASUNTO_RC: '¡Recordatorio renovación de contrato!',
 	ASUNTO_RP: 'Solicitud de recuperación de contraseña',
 	//Correo destino notificación de pre registro
-	PARA_PR: 'felipe.trivino@coboy.com.co',
+	PARA_PR: 'contacto@gottwesen.co',
 	PARA_RP: 'felipe.trivino@coboy.com.co',
 
 	//OBJETOS COMUNES
