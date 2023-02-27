@@ -1,10 +1,11 @@
 const comunes = require("../config/comunes")
 const modelo = require("../models/beneficiario")
 
+//Julian Calderon   2023/02/26 Modificacion de contrato por subcontrato
 exports.consultar = (req, res) => {
-    const {contrato} = req.body
+    const {subcontrato} = req.body
     modelo
-        .consultar(contrato)
+        .consultar(subcontrato)
         .then(resultados => {
             return res.send(comunes.respuestaConsulta(resultados))        
         })     
@@ -12,11 +13,12 @@ exports.consultar = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
-//Julian Calderon   10/1/2023
+//Julian Calderon   2023/01/10 Creacion de funcion
+//Julian Calderon   2023/02/26 Modificacion de contrato por subcontrato y actualizacion de tabla
 exports.crear = (req, res) => {
-    const {contrato, nombre, edad, parentesco, adicional, telefono, marquilla} = req.body
+    const {subcontrato, nombre, edad, parentesco, adicional, contacto, emoji, estado} = req.body
     modelo
-        .crear(contrato, nombre, edad, parentesco, adicional, telefono, marquilla)
+        .crear(subcontrato, nombre, edad, parentesco, adicional, contacto, emoji, estado)
         .then(() => {
             return res.send(comunes.respuestaCreacion())        
         })     
@@ -24,11 +26,12 @@ exports.crear = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
-//Julian Calderon   10/1/2023
+//Julian Calderon   2023/01/10 Creacion de funcion
+//Julian Calderon   2023/02/26 Actualizacion de tabla
 exports.modificar = (req, res) => {
-    const {secuencia, nombre, edad, parentesco, adicional, telefono, marquilla} = req.body
+    const {secuencia, nombre, edad, parentesco, adicional, contacto, emoji, estado} = req.body
     modelo
-        .modificar(secuencia, nombre, edad, parentesco, adicional, telefono, marquilla)
+        .modificar(secuencia, nombre, edad, parentesco, adicional, contacto, emoji, estado)
         .then(() => {
             return res.send(comunes.respuestaModificacion())        
         })     
@@ -36,11 +39,12 @@ exports.modificar = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
-//Julian Calderon   10/1/2023
-exports.modificarMarquilla = (req, res) => {
-    const {secuencia, marquilla} = req.body
+//Julian Calderon   2023/01/10 Creacion de funcion
+//Julian Calderon   2023/02/26 Actualizacion de tabla
+exports.modificarEmoji = (req, res) => {
+    const {secuencia, emoji} = req.body
     modelo
-        .modificarMarquilla(secuencia, marquilla)
+        .modificarEmoji(secuencia, emoji)
         .then(() => {
             return res.send(comunes.respuestaModificacion())        
         })     
@@ -48,7 +52,7 @@ exports.modificarMarquilla = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
-//Julian Calderon   10/1/2023
+//Julian Calderon   2023/01/10 Creacion de funcion
 exports.eliminar = (req, res) => {
     const {secuencia} = req.body
     modelo
@@ -61,7 +65,6 @@ exports.eliminar = (req, res) => {
         })
 }
 exports.consultarPorSecuencia = (req, res) => {
-   
     modelo
         .consultarPorSecuencia(req.params.secuencia)
         .then(resultados => {
@@ -70,7 +73,4 @@ exports.consultarPorSecuencia = (req, res) => {
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
-
-
-
 }
