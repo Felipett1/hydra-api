@@ -4,19 +4,19 @@ Autor: Julian Camilo Calderon
     Detalle: Funcion que realiza la verificacion de el estado en mora de un contrato.
 */
 
-exports.valorMensual = (contrato) => {
-    const valorMensual = (contrato.valor / contrato.cuotas).toFixed(2)
+exports.valorMensual = (subcontrato) => {
+    const valorMensual = (subcontrato.valor / subcontrato.cuotas).toFixed(2)
     return valorMensual
 },
-exports.estadoMora = (contrato, pagos,) => {
+exports.estadoMora = (subcontrato, pagos,) => {
     // segundos = milisegundos/1000
     // minutos = segundos/60
     // horas = minutos/60
     // Días = horas/24
     // Meses = 30
     const date1 = new Date() / (1000*60*60*24*30)
-    const date2 = new Date(contrato.fecha_inicio) / (1000*60*60*24*30)
+    const date2 = new Date(subcontrato.fecha_inicio) / (1000*60*60*24*30)
     const meses = (date1 - date2).toFixed(0)
-    const valorContractual = meses * contrato.mensualidad
+    const valorContractual = meses * subcontrato.mensualidad
     return (valorContractual > pagos.recaudado ? true : false)
 }

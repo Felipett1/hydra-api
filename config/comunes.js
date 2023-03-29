@@ -13,6 +13,7 @@ module.exports = {
 	COD_500: 500,
 	DTL_AUTENTICACION_EXITOSO: 'Autenticación exitosa',
 	DTL_AUTENTICACION_FALLIDO: 'Usuario o contraseña invalida',
+	DTL_ERROR_CREACION_SUBCONTRATO: 'No es posible realizar la creación del subcontrato',
 
 	//CONSTANTES DE CORREO
 	DE: 'info@coboy.com.co',
@@ -20,10 +21,11 @@ module.exports = {
 	ASUNTO_CS: '¡Se ha creado un nuevo servicio!',
 	ASUNTO_ANS: '¡Recordatorio atención de servicio!',
 	ASUNTO_SS: '¡Se ha creado una solicitud de servicio!',
-	ASUNTO_RC: '¡Recordatorio renovación de contrato!',
+	ASUNTO_RC: '¡Recordatorio renovación de subcontrato!',
 	ASUNTO_RP: 'Solicitud de recuperación de contraseña',
 	//Correo destino notificación de pre registro
-	PARA_PR: 'contacto@gottwesen.co',
+	//PARA_PR: 'contacto@gottwesen.co',
+	PARA_PR: 'felipe.trivino@coboy.com.co',
 	PARA_RP: 'felipe.trivino@coboy.com.co',
 
 	//OBJETOS COMUNES
@@ -48,14 +50,14 @@ module.exports = {
 		}
 	},
 
-    /*
-    Autor: Felipe Triviño
-    Fecha: 05/10/222
-    Detalle: FUNCION QUE GENERA EL MENSAJE GENERICO DE ERROR CUANDO EXISE UNA EXCEPCIÓN.
-    */
-    respuestaExcepcion(error) {
-        return this.estado(this.COD_ERROR, this.MSG_ERROR, error + "")
-    },
+	/*
+	Autor: Felipe Triviño
+	Fecha: 05/10/222
+	Detalle: FUNCION QUE GENERA EL MENSAJE GENERICO DE ERROR CUANDO EXISE UNA EXCEPCIÓN.
+	*/
+	respuestaExcepcion(error) {
+		return this.estado(this.COD_ERROR, this.MSG_ERROR, error + "")
+	},
 
 	/*
 	Autor: Felipe Triviño
@@ -92,4 +94,18 @@ module.exports = {
 	respuestaGenerica() {
 		return this.estado(this.COD_EXITOSO, this.MSG_EXITOSO, this.DTL_EXITOSO)
 	},
+
+	/*
+	Autor: Felipe Triviño
+	Fecha: 20/10/222
+	Detalle: FUNCION QUE GENERA EL MENSAJE GENERICO DE RESPUESTA.
+	*/
+	respuestaExitosaElemento(resultado) {
+		var estado = this.estado(this.COD_EXITOSO, this.MSG_EXITOSO, this.DTL_EXITOSO)
+		var respuesta = {
+			estado,
+			resultado
+		}
+		return respuesta
+	}
 }

@@ -53,12 +53,12 @@ exports.modificarEmoji = (req, res) => {
         })
 }
 //Julian Calderon   2023/01/10 Creacion de funcion
-exports.eliminar = (req, res) => {
-    const {secuencia} = req.body
+exports.cambiarEstado = (req, res) => {
+    const {secuencia, estado} = req.body
     modelo
-        .eliminar(secuencia)
+        .cambiarEstado(secuencia, estado)
         .then(() => {
-            return res.send(comunes.respuestaEliminar())        
+            return res.send(comunes.respuestaGenerica())        
         })     
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))

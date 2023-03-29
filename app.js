@@ -3,9 +3,8 @@ const express = require("express")
 require("dotenv").config()
 const bodyParser = require("body-parser")
 const routeUsuario = require("../hydra-api/router/usuario")
-const routeContrato = require("../hydra-api/router/contrato")
 const routeSubContrato = require("../hydra-api/router/subcontrato")
-const routeCierreSubcontrato = require("./router/cierre_Subcontrato")
+const routeCierreSubcontrato = require("./router/cierre_subcontrato")
 const routeCliente = require("../hydra-api/router/cliente")
 const routeBeneficiario = require("../hydra-api/router/beneficiario")
 const routeServicio = require("../hydra-api/router/servicio")
@@ -39,7 +38,6 @@ app.use(function (req, res, next) {
 
 //Aqui van las rutas
 app.use(routeUsuario)
-app.use(routeContrato)
 app.use(routeSubContrato)
 app.use(routeCliente)
 app.use(routeCierreSubcontrato)

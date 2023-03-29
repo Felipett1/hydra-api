@@ -13,7 +13,7 @@ Tipo de notificaciones:
 2 -> Creacion de servicio
 3 -> ANS
 4 -> Solicitud de servicio
-5 -> Renovación contrato
+5 -> Renovación Subcontrato
 */
 exports.enviarCorreo = async (para, tipoNotificacion, cargaUtil) => {
     const transporter = correo
@@ -40,7 +40,7 @@ Tipo de notificaciones:
 2 -> Creacion de servicio
 3 -> ANS
 4 -> Solicitud de servicio
-5 -> Renovación contrato
+5 -> Renovación Subcontrato
 6 -> Recuperación de contraseña
 */
 function validarNotificacion(tipoNotificacion, datos) {

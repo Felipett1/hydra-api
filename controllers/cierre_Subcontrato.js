@@ -1,11 +1,10 @@
 const comunes = require("../config/comunes")
-const modeloCierre = require("../models/cierre_Subcontrato")
+const modeloCierre = require("../models/cierre_subcontrato")
 const modeloSubcontrato = require("../models/subcontrato")
 
 //Julian Calderon 2023/02/26 Se modifica la funcion cierre_Contrato por cierre_subcontrato
 exports.modificarEstado = (req, res) => {
     const {subcontrato, fecha_fin, causal} = req.body
-    console.log(req.body)
     modeloCierre
         .modificarEstado(subcontrato, fecha_fin, causal)
         .then((resultado) => {

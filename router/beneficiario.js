@@ -7,6 +7,6 @@ router.post(path, controller.consultar)
 router.post(path + "/crear", controller.crear)
 router.put(path, controller.modificar)
 router.put(path + "/emoji", controller.modificarEmoji)
-router.delete(path, controller.eliminar)
+router.delete(path, controller.cambiarEstado)
 router.get(path + '/:secuencia', controller.consultarPorSecuencia)
 module.exports = router

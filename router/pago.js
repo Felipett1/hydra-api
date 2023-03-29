@@ -5,7 +5,7 @@ const path = '/pago'
 
 router.get(path, controller.consultar)
 router.get(path + '/cliente', controller.consultarCliente)
-router.get(path + '/contrato', controller.consultarContrato)
+router.get(path + '/subcontrato', controller.consultarSubContrato)
 router.post(path, controller.cargar)
 router.put(path + '/valor', controller.modificarPago)
 router.post(path + '/masivo', controller.cargarMasivo)

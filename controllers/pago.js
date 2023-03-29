@@ -15,9 +15,9 @@ exports.consultar = (req, res) => {
 }
 
 exports.cargar = (req, res) => {
-    const { contrato, fecha, periodo, valor } = req.body
+    const { subcontrato, fecha, periodo, valor, anticipado } = req.body
     modelo
-        .cargar(contrato, fecha, periodo, valor)
+        .cargar(subcontrato, fecha, periodo, valor, anticipado)
         .then(() => {
             return res.send(comunes.respuestaCreacion())
         })
@@ -32,9 +32,9 @@ exports.cargarMasivo = async (req, res) => {
     const pagos = req.body.pagos
 
     for (let i = 0; i < pagos.length; i++) {
-        //console.log(`Esta pagando el periodo : ${pagos[i].periodo} del contrato ${pagos[i].contrato} por un valor de ${pagos[i].valor}`);
+        //console.log(`Esta pagando el periodo : ${pagos[i].periodo} del subcontrato ${pagos[i].subcontrato} por un valor de ${pagos[i].valor}`);
         await modelo
-            .cargar(pagos[i].contrato, pagos[i].fecha, pagos[i].periodo, pagos[i].valor)
+            .cargar(pagos[i].subcontrato, pagos[i].fecha, pagos[i].periodo, pagos[i].valor, pagos[i].anticipado)
             .then(() => {
                 pagos[i].resultado = "Registro guardado exitosamente."
             })
@@ -60,11 +60,11 @@ exports.consultarCliente = (req, res) => {
     //console.log(params);
 }
 
-exports.consultarContrato = (req, res) => {
-    const { contrato, inicio, fin } = req.body
+exports.consultarSubContrato = (req, res) => {
+    const { subcontrato, inicio, fin } = req.body
     //console.log("El dato ingresado es: " + id)
     modelo
-        .consultarContrato(contrato, inicio, fin)
+        .consultarSubContrato(subcontrato, inicio, fin)
         .then(resultados => {
             return res.send(comunes.respuestaConsulta(resultados))
             //console.log("El dato ingresado es: " + req.params.id)
