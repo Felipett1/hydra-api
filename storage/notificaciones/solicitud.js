@@ -1,4 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+exports.mensaje = (datos) => {
+    mensaje = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" style="width:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0">
 	<head>
 		<meta charset="UTF-8">
@@ -112,31 +113,31 @@
 																										<ul>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Subcontrato: </strong> 963327</p>
+																													<strong>Subcontrato: </strong> ${datos.subcontrato}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Fecha de creación: </strong> 10/11/2022</p>
+																													<strong>Fecha de creación: </strong> ${datos.fecha_solicitud}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Nombre completo: </strong> Pepito Perez</p>
+																													<strong>Nombre completo: </strong> ${datos.nombre_completo}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Telefono: </strong> 31075504321</p>
+																													<strong> Celular: </strong> ${datos.celular}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Correo: </strong> pepito@hotmail.com</p>
+																													<strong>Correo: </strong> ${datos.correo}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Tipo de servicio: </strong> (Legal, Medico, etc)</p>
+																													<strong>Tipo de servicio: </strong> ${datos.nombre}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
-																													<strong>Detalle: </strong> El cliente solicita un servicio legal por un accidente de transito que sufrio y un servicio medico para su esposa que es beneficiaria.</p>
+																													<strong>Detalle: </strong> ${detalle_inicial}</p>
 																											</li>
 																										</ul>
 																									</td>
@@ -283,3 +284,6 @@
 																						</div>
 																					</body>
 																				</html>
+																				`
+    return mensaje
+}

@@ -57,7 +57,7 @@ function validarNotificacion(tipoNotificacion, datos) {
                 data = fs.readFileSync('./storage/notificaciones/ans.html', 'utf8');
                 return data
             case 4:
-                data = fs.readFileSync('./storage/notificaciones/solicitud.html', 'utf8');
+                data = fs.readFileSync('./storage/notificaciones/solicitud.js', 'utf8');
                 return data
             case 5:
                 data = fs.readFileSync('./storage/notificaciones/renovacion.html', 'utf8');
