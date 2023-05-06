@@ -1,6 +1,4 @@
 const conexion = require("../config/db");
-const modificarPago = require("../controllers/pago");
-const verificar = require("../utils/validacion")
 
 module.exports = {
 
@@ -31,5 +29,10 @@ module.exports = {
     async consultarSubContratoGlobal(subcontrato) {
         const resultados = await conexion.query(`select count (*) as periodos, sum(valor) as recaudado from pago where subcontrato = $1`, [subcontrato]);
         return resultados.rows[0];
+    },
+    //
+    async consultarSubContratoDetalle(subcontrato) {
+        const resultados = await conexion.query(`select * from pago where subcontrato = $1`, [subcontrato]);
+        return (resultados.rows.length > 0 ? resultados.rows : false);
     }
 }
