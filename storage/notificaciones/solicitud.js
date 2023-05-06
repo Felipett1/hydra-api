@@ -115,7 +115,6 @@ exports.mensaje = (datos) => {
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
 																													<strong>Subcontrato: </strong> ${datos.subcontrato}</p>
-																													<strong>Subcontrato: </strong> ${datos.subcontrato}</p>
 																											</li>
 																											<li style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;Margin-bottom:15px;margin-left:0;color:#7a7a7a;font-size:16px">
 																												<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:23px;color:#7a7a7a;font-size:15px">
