@@ -7,7 +7,6 @@ module.exports = {
     async consultar(subcontrato) {
         const resultado = await conexion.query(`select * from beneficiario where subcontrato = $1`,
             [subcontrato]);
-        console.log(subcontrato)
         return resultado.rows;
     },
     //Julian Calderon   2023/01/10 Creacion de nuevo beneficiario

@@ -118,6 +118,7 @@ exports.consultarPorCliente = (req, res) => {
             }
             return res.send(comunes.respuestaModificacion())
         } catch (error) {
+            console.log(error)
             return res.send(comunes.respuestaExcepcion(error.detail))
         }
     },

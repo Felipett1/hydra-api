@@ -12,4 +12,9 @@ module.exports = {
         where id = $2` , [clave,id]);
         return resultados.rows;
     },
+
+    async consulta(usuario) {
+        const resultados = await conexion.query(`select usuario, rol from usuario where usuario = $1`,  [usuario]);
+        return resultados.rows[0];
+    },
 } 

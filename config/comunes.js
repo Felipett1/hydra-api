@@ -14,6 +14,7 @@ module.exports = {
 	DTL_AUTENTICACION_EXITOSO: 'Autenticación exitosa',
 	DTL_AUTENTICACION_FALLIDO: 'Usuario o contraseña invalida',
 	DTL_ERROR_CREACION_SUBCONTRATO: 'No es posible realizar la creación del subcontrato',
+	DTL_ERROR_CREACION_SERVICIO: 'No es posible realizar la creación del sevicio',
 
 	//CONSTANTES DE CORREO
 	DE: 'info@coboy.com.co',
@@ -27,7 +28,7 @@ module.exports = {
 	//PARA_PR: 'contacto@gottwesen.co',
 	PARA_PR: 'felipe.trivino@coboy.com.co',
 	PARA_RP: 'felipe.trivino@coboy.com.co',
-
+	PARA_SS: 'felipe.trivino@coboy.com.co',
 	//OBJETOS COMUNES
 	estado: (codigo, mensaje, detalle) => ({ codigo, mensaje, detalle }),
 

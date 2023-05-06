@@ -3,6 +3,8 @@ const correo = require("../config/correo");
 const comunes = require("../config/comunes")
 const preRegistro = require("../storage/notificaciones/pre_registro")
 const recuperacion = require("../storage/notificaciones/recuperacion")
+const servicio = require("../storage/notificaciones/servicio")
+const solicitud = require("../storage/notificaciones/solicitud")
 
 /*
 Autor: Felipe Triviño
@@ -51,13 +53,13 @@ function validarNotificacion(tipoNotificacion, datos) {
                 data = preRegistro.mensaje(datos)
                 return data
             case 2:
-                data = fs.readFileSync('./storage/notificaciones/servicio.html', 'utf8');
+                data = servicio.mensaje(datos)
                 return data
             case 3:
                 data = fs.readFileSync('./storage/notificaciones/ans.html', 'utf8');
                 return data
             case 4:
-                data = fs.readFileSync('./storage/notificaciones/solicitud.html', 'utf8');
+                data = solicitud.mensaje(datos)
                 return data
             case 5:
                 data = fs.readFileSync('./storage/notificaciones/renovacion.html', 'utf8');
