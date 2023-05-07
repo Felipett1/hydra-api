@@ -31,7 +31,7 @@ module.exports = {
 	PARA_SS: 'felipe.trivino@coboy.com.co',
 	//OBJETOS COMUNES
 	estado: (codigo, mensaje, detalle) => ({ codigo, mensaje, detalle }),
-	pagoGenerico: (periodo, valor, mes) => ({ periodo, valor, mes }),
+	pagoGenerico: (periodo, valor, mes, estado, valorMes) => ({ periodo, valor, mes, estado, valorMes }),
 	/*
 	Autor: Felipe Triviño
 	Fecha: 05/10/222
@@ -140,6 +140,35 @@ module.exports = {
 				return 'DICIEMBRE/' + anio
 			default:
 				return 'ERROR'
+		}
+	},
+
+	agregarMes(fecha, diaSubContrato) {
+		try {
+			fecha = new Date(fecha)
+			dia = fecha.getDate()
+			mes = fecha.getMonth() + 1
+			if (dia != diaSubContrato) {
+				fecha.setDate(diaSubContrato)
+				dia = diaSubContrato
+			}
+			if (dia <= 28) {
+				fecha.setMonth(fecha.getMonth() + 1)
+			} else {
+				fecha.setMonth(fecha.getMonth() + 1)
+				dia = fecha.getDate()
+				if (dia < 5) {
+					if (mes != 2) {
+						fecha.setDate(0)
+					} else {
+						fecha.setDate(0)
+						fecha.setDate(diaSubContrato)
+					}
+				}
+			}
+			return fecha
+		} catch (error) {
+			console.log(error)
 		}
 	}
 }
