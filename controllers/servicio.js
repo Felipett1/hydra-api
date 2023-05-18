@@ -70,8 +70,7 @@ exports.cerrarServicio = (req, res) => {
 
     modelo
         .cerrarServicio(fecha_final, detalle_final, secuencia)
-        .then((resultado) => {
-
+        .then(() => {
             return res.send(comunes.respuestaModificacion())
         })
         .catch(err => {
