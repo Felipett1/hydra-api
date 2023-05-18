@@ -18,9 +18,9 @@ exports.consultar = (req, res) => {
 }
 
 exports.cargar = (req, res) => {
-    const { subcontrato, fecha, periodo, valor, anticipado } = req.body
+    const { subcontrato, fecha, periodo, valor, anticipado ,mes} = req.body
     modelo
-        .cargar(subcontrato, fecha, periodo, valor, anticipado)
+        .cargar(subcontrato, fecha, periodo, valor, anticipado,mes)
         .then(() => {
             return res.send(comunes.respuestaCreacion())
         })

@@ -14,9 +14,9 @@ module.exports = {
         const resultados = await conexion.query("Select p.* from pago p, subcontrato s where p.subcontrato = s.id and c.cliente = $1 and (fecha > $2  and fecha < $3)", [cliente, inicio, fin]);
         return resultados.rows;
     },
-    async cargar(subcontrato, fecha, periodo, valor, anticipado) {
-        const resultados = await conexion.query(`insert into pago (subcontrato, fecha, periodo, valor, anticipado)
-         values ($1, $2, $3, $4, $5)` , [subcontrato, fecha, periodo, valor, anticipado]);
+    async cargar(subcontrato, fecha, periodo, valor, anticipado,mes) {
+        const resultados = await conexion.query(`insert into pago (subcontrato, fecha, periodo, valor, anticipado,mes)
+         values ($1, $2, $3, $4, $5,$6)` , [subcontrato, fecha, periodo, valor, anticipado,mes]);
         return resultados.rows;
     },
     async modificarPago(valor, secuencia) {
