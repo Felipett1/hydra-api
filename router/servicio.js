@@ -9,4 +9,5 @@ router.get(path + '/documento', controller.consultarDocumento)
 router.put(path, controller.crear)
 router.get(path, controller.consultarServicio)
 router.put(path + '/cerrar', controller.cerrarServicio)
+router.post(path + '/reporte', controller.consultarServicioTiempo)
 module.exports = router

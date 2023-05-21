@@ -9,7 +9,7 @@ module.exports = {
             AND b.subcontrato = s.id
             AND s.id = $1
             AND nb.secuencia = (
-                    SELECT secuencia
+                    SELECT MAX(secuencia)
                 FROM NOVEDAD_BENEFICIARIO
                 WHERE beneficiario = NB.beneficiario
                 AND fecha = (

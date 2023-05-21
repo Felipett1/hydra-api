@@ -39,5 +39,17 @@ module.exports = {
         `, [fecha_final, detalle_final, secuencia]);
         //console.log(resultados.rowCount)
         return resultados.rowCount;
+    },
+    async consultarServicioTiempo(fechaInicio, fechaFin) {
+        const resultado = await conexion.query(
+            `SELECT s.subcontrato as "Subcontrato", ts.nombre as "Servicio",
+            to_char(s.fecha_inicial,'DD/MM/YYYY') as "Fecha inicial", s.detalle_inicial as "Detalle inicial",
+            to_char(s.fecha_final,'DD/MM/YYYY') as "Fecha final", s.detalle_final as "Detalle final"
+            FROM servicio s, tipo_servicio ts
+            WHERE s.tipo_servicio = ts.id
+            AND (fecha_inicial between $1 AND $2
+            OR fecha_final between $1 AND $2)`
+            , [fechaInicio, fechaFin]);
+        return resultado.rows;
     }
 } 

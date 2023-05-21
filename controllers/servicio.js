@@ -77,3 +77,15 @@ exports.cerrarServicio = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
+
+exports.consultarServicioTiempo = (req, res) => {
+    const { fechaInicio, fechaFin } = req.body
+    modelo
+        .consultarServicioTiempo(fechaInicio, fechaFin)
+        .then((resultado) => {
+            return res.send(comunes.respuestaConsulta(resultado))
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}

@@ -34,5 +34,18 @@ module.exports = {
     async consultarSubContratoDetalle(subcontrato) {
         const resultados = await conexion.query(`select * from pago where subcontrato = $1`, [subcontrato]);
         return (resultados.rows.length > 0 ? resultados.rows : false);
+    },
+    async consultarPagoTiempo(fechaInicio, fechaFin) {
+        const resultado = await conexion.query(
+            `SELECT to_char(p.fecha,'DD/MM/YYYY') as "Fecha", c.documento as "Documento",
+            c.nombre_completo as "Nombre", p.subcontrato as "Subcontrato", 
+            p.periodo as "Periodo", p.valor as "Total"
+            FROM pago p, subcontrato s, cliente c
+            WHERE p.subcontrato = s.id
+            AND s.cliente = c.documento
+            AND fecha between $1 AND $2
+            order by documento, periodo asc`
+            , [fechaInicio, fechaFin]);
+        return resultado.rows;
     }
 }

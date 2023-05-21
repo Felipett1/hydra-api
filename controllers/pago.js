@@ -157,6 +157,7 @@ exports.consultarSubContratoDetalle = async (req, res) => {
         }
         return res.send(respuesta)
     } catch (error) {
+        console.log(error)
         return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(error))
     }
 }
@@ -215,4 +216,16 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
             }
         }
     }
+}
+
+exports.consultarPagoTiempo = (req, res) => {
+    const { fechaInicio, fechaFin } = req.body
+    modelo
+        .consultarPagoTiempo(fechaInicio, fechaFin)
+        .then((resultado) => {
+            return res.send(comunes.respuestaConsulta(resultado))
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
 }
