@@ -2,9 +2,9 @@ const conexion = require("../config/db")
 
 module.exports = {
 
-    async consultarSubContrato(id) {
+    async consultarSubContratoCerrado(id) {
         const resultado = await conexion.query(`select a.documento, a.nombre_completo, sc.estado, sc.celular, sc.telefono, s.secuencia, s.fecha_inicial, ts.nombre as tipo, s.detalle_inicial, s.fecha_final, s.detalle_final, s.contacto    
-        from servicio s, subcontrato sc, cliente a, tipo_servicio ts where s.subcontrato = sc.id and sc.cliente = a.documento and s.tipo_servicio = ts.id and sc.id = $1`, [id]);
+        from servicio s, subcontrato sc, cliente a, tipo_servicio ts where s.subcontrato = sc.id and sc.cliente = a.documento and s.tipo_servicio = ts.id and sc.id = $1 and s.fecha_final is not null`, [id]);
         return resultado.rows;
     },
     //Consultar servicios activos de un subcontrato
@@ -42,7 +42,7 @@ module.exports = {
     },
     async consultarServicioTiempo(fechaInicio, fechaFin) {
         const resultado = await conexion.query(
-            `SELECT s.subcontrato as "Subcontrato", ts.nombre as "Servicio",
+            `SELECT s.secuencia as "ID", s.subcontrato as "Subcontrato", ts.nombre as "Servicio",
             to_char(s.fecha_inicial,'DD/MM/YYYY') as "Fecha inicial", s.detalle_inicial as "Detalle inicial",
             to_char(s.fecha_final,'DD/MM/YYYY') as "Fecha final", s.detalle_final as "Detalle final"
             FROM servicio s, tipo_servicio ts

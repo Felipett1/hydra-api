@@ -13,4 +13,9 @@ module.exports = {
         (subcontrato, fecha_fin, causal) values($1, $2, $3)`, [subcontrato, fecha_fin, causal]);
         return resultados.rowCount;
     },
+
+    async consultarPorSubContrato(subcontrato) {
+        const resultados = await conexion.query('select * from cierre_subcontrato where subcontrato = $1', [subcontrato]);
+        return (resultados.rows.length > 0 ? resultados.rows[0] : false);
+    },
 }

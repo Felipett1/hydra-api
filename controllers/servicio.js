@@ -1,10 +1,10 @@
 const comunes = require("../config/comunes")
 const modelo = require("../models/servicio")
 
-exports.consultarSubContrato = (req, res) => {
+exports.consultarSubContratoCerrado = (req, res) => {
     const { id } = req.body
     modelo
-        .consultarSubContrato(id)
+        .consultarSubContratoCerrado(id)
         .then((resultado) => {
             return res.send(comunes.respuestaConsulta(resultado))
         })
@@ -30,7 +30,6 @@ exports.consultarDocumento = (req, res) => {
     modelo
         .consultarDocumento(documento)
         .then((resultado) => {
-            console.log(resultado)
             return res.send(comunes.respuestaConsulta(resultado))
         })
         .catch(err => {

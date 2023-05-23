@@ -4,6 +4,7 @@ const modelo = require("../models/pago")
 const mSubContrato = require("../models/subcontrato")
 const mNovedadSubContrato = require("../models/novedad_subcontrato")
 const mNovedadBeneficiario = require("../models/novedad_beneficiario")
+require("dotenv").config()
 
 exports.consultar = (req, res) => {
     const { inicio, fin } = req.body
@@ -18,9 +19,9 @@ exports.consultar = (req, res) => {
 }
 
 exports.cargar = (req, res) => {
-    const { subcontrato, fecha, periodo, valor, anticipado ,mes} = req.body
+    const { subcontrato, fecha, periodo, valor, anticipado, mes } = req.body
     modelo
-        .cargar(subcontrato, fecha, periodo, valor, anticipado,mes)
+        .cargar(subcontrato, fecha, periodo, valor, anticipado, mes)
         .then(() => {
             return res.send(comunes.respuestaCreacion())
         })
@@ -120,6 +121,7 @@ exports.consultarSubContratoDetalle = async (req, res) => {
         let listaPagos = []
         //Se obtiene la fecha inicial del contrato
         let fecha = new Date(dtlSubContrato.fecha_inicio)
+        //Obtiene el día del inicio del subcontrato
         let diaSubContrato = fecha.getDate();
         //let fecha = new Date("2023-03-31")
         //fecha.setDate(1)
@@ -168,11 +170,17 @@ Reusltado:
 2 -> Pendiente
 3 -> Incompleto
 4 -> En mora
+5 -> Pago sobrepasa lo esperado
+6 -> En validación
 */
 exports.validarEstado = async (subcontrato, fecha, valor) => {
-    if (fecha >= new Date()) {
+    if (fecha >= new Date() && valor == 0) {
         return {
             estado: 2
+        }
+    } else if (fecha >= new Date() && valor != 0) {
+        return {
+            estado: 6
         }
     } else {
         //Consulta el valor plan segun la fecha
@@ -201,11 +209,24 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
         let valorTotal = valorPlan + adicional + mascota
 
         if (valor == 0) {
-            return {
-                estado: 4,
-                valorMes: valorTotal
+            //Validar estado si no se ha recibido pago pero esta dentro de los días de gabela
+            gabela = fecha.setDate(fecha.getDate() + process.env.DIAS_GABELA);
+            if (new Date() > gabela) {
+                return {
+                    estado: 4,
+                    valorMes: valorTotal
+                }
+            } else {
+                return {
+                    estado: 2,
+                    valorMes: valorTotal
+                }
             }
-        } else if (valor >= valorTotal) {
+        } else if (valor > valorTotal) {
+            return {
+                estado: 5
+            }
+        } else if (valor == valorTotal) {
             return {
                 estado: 1
             }
