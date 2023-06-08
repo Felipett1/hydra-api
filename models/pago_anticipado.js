@@ -1,10 +1,16 @@
 const conexion = require("../config/db")
 
 module.exports = {
-    async crear(pendiente, pendiente, pagado, descuento) {
+    async cargar(pendiente, porcentaje, pagado, descuento) {
         const resultado = await conexion.query(`INSERT INTO pago_anticipado(
-            pendiente, pendiente, pagado, descuento)
-            VALUES ($1, $2, $3, $4)`, [pendiente, pendiente, pagado, descuento]);
+            pendiente, porcentaje, pagado, descuento)
+            VALUES ($1, $2, $3, $4)`, [pendiente, porcentaje, pagado, descuento]);
+        return resultado.rows;
+    },
+
+    async actualizarSubContrato(estado,id){
+        const resultado = await conexion.query(`update subcontrato set anticipado = $1
+            where id = $2`, [estado,id]);
         return resultado.rows;
     }
 } 
