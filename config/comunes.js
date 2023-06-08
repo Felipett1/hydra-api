@@ -153,7 +153,11 @@ module.exports = {
 				dia = diaSubContrato
 			}
 			if (dia <= 28) {
+				//console.log('********')
+				//console.log(fecha)
 				fecha.setMonth(fecha.getMonth() + 1)
+				//console.log(fecha.getMonth())
+				//console.log(fecha)
 			} else {
 				fecha.setMonth(fecha.getMonth() + 1)
 				dia = fecha.getDate()
