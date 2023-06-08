@@ -140,6 +140,9 @@ exports.consultarSubContratoDetalle = async (req, res) => {
                 }
 
                 if (!aplico) {
+                    console.log('Iterador: ' + i)
+                    console.log(fecha)
+                    console.log(comunes.obtenerMesAnio(fecha))
                     validacion = await this.validarEstado(subcontrato, fecha, 0)
                     listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
                 }
