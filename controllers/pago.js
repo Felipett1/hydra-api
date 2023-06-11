@@ -140,9 +140,6 @@ exports.consultarSubContratoDetalle = async (req, res) => {
                 }
 
                 if (!aplico) {
-                    console.log('Iterador: ' + i)
-                    console.log(fecha)
-                    console.log(comunes.obtenerMesAnio(fecha))
                     validacion = await this.validarEstado(subcontrato, fecha, 0)
                     listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
                 }
@@ -213,7 +210,7 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
 
         if (valor == 0) {
             //Validar estado si no se ha recibido pago pero esta dentro de los días de gabela
-            gabela = fecha.setDate(fecha.getDate() + process.env.DIAS_GABELA);
+            gabela = fecha.setDate(fecha.getDate() + parseInt(process.env.DIAS_GABELA));
             if (new Date() > gabela) {
                 return {
                     estado: 4,
