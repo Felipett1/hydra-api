@@ -8,7 +8,7 @@ module.exports = {
     },
     // Julian Calderon 2023/02/26 Sustitucion de la tabla contrato a subcontrato
     async consultarPorCliente(cliente) {
-        const resultados = await conexion.query('select * from subcontrato where cliente = $1', [cliente]);
+        const resultados = await conexion.query('select * from subcontrato where cliente = $1 ORDER BY estado DESC', [cliente]);
         return resultados.rows;
     },
     async consultarPorId(id) {
