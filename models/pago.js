@@ -17,13 +17,13 @@ module.exports = {
     async cargar(subcontrato, fecha, periodo, valor, anticipado, mes) {
         const resultados = await conexion.query(`insert into pago (subcontrato, fecha, periodo, valor, anticipado,mes)
          values ($1, $2, $3, $4, $5,$6)` , [subcontrato, fecha, periodo, valor, anticipado, mes]);
-        return resultados.rows;
+        return resultados.rowCount;
     },
     async modificarPago(valor, secuencia) {
         const resultados = await conexion.query(`update pago 
         set valor  = $1
         where secuencia = $2` , [valor, secuencia]);
-        return resultados.rows;
+        return resultados.rowCount;
     },
     // Julian Calderon, 13/01/2022, se realiza la consulta del subcontrato a nivel global
     async consultarSubContratoGlobal(subcontrato) {
