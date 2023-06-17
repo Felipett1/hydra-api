@@ -6,13 +6,16 @@ exports.cargar = (req, res) => {
     const { pendiente, porcentaje, pagado, descuento } = req.body
     modelo
         .cargar(pendiente, porcentaje, pagado, descuento)
-        .then(() => {
-            return res.send(comunes.respuestaCreacion())
+        .then(resultado => {
+            var respuesta = {
+               estado: comunes.respuestaCreacion(),
+               resultado
+            }
+            return res.send(respuesta)
         })
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
-
 }
 exports.actualizar = (req, res) => {
     const { estado,id } = req.body

@@ -47,5 +47,10 @@ module.exports = {
             order by documento, periodo asc`
             , [fechaInicio, fechaFin]);
         return resultado.rows;
+    },
+    async consultarPagoConAnticipado (subcontrato){
+        const resultados = await conexion.query(`select * from pago where subcontrato = $1 and anticipado is not null`, [subcontrato]);
+        return resultados.rows[0];
+
     }
 }

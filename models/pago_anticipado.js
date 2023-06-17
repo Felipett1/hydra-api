@@ -4,7 +4,7 @@ module.exports = {
     async cargar(pendiente, porcentaje, pagado, descuento) {
         const resultado = await conexion.query(`INSERT INTO pago_anticipado(
             pendiente, porcentaje, pagado, descuento)
-            VALUES ($1, $2, $3, $4)`, [pendiente, porcentaje, pagado, descuento]);
+            VALUES ($1, $2, $3, $4) returning secuencia`, [pendiente, porcentaje, pagado, descuento]);
         return resultado.rows;
     },
 

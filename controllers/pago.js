@@ -4,6 +4,8 @@ const modelo = require("../models/pago")
 const mSubContrato = require("../models/subcontrato")
 const mNovedadSubContrato = require("../models/novedad_subcontrato")
 const mNovedadBeneficiario = require("../models/novedad_beneficiario")
+const mAnticipado = require("../models/pago_anticipado")
+const mPago = require("../models/pago")
 require("dotenv").config()
 
 exports.consultar = (req, res) => {
@@ -172,12 +174,31 @@ Reusltado:
 4 -> En mora
 5 -> Pago sobrepasa lo esperado
 6 -> En validación
+7 -> Anticipado
 */
 exports.validarEstado = async (subcontrato, fecha, valor) => {
+    //consulta de pagos para verificar anticipado y se actualiza el subcontrato
+    
+    let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
+    if (anticipado) {
+        await mAnticipado.actualizarSubContrato(true,subcontrato)
+      return {
+        estado: 7,
+      };
+    } 
     if (fecha >= new Date() && valor == 0) {
+      //consulta de pagos para verificar anticipado y se actualiza el subcontrato
+
+      let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
+      if (anticipado) {
+        await mAnticipado.actualizarSubContrato(true, subcontrato);
         return {
-            estado: 2
-        }
+          estado: 7,
+        };
+      }
+      return {
+        estado: 2,
+      };
     } else if (fecha >= new Date() && valor != 0) {
         return {
             estado: 6
@@ -237,6 +258,7 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
             }
         }
     }
+     
 }
 
 exports.consultarPagoTiempo = (req, res) => {
