@@ -9,6 +9,7 @@ const mNovedadSubContrato = require("../models/novedad_subcontrato")
 const mNovedadBeneficiario = require("../models/novedad_beneficiario")
 const mSubContrato = require("../models/subcontrato")
 const mPago = require("../models/pago")
+const mAnticipado = require("../models/pago_anticipado")
 
 exports.consultar = (req, res) => {
     modelo
@@ -246,8 +247,19 @@ exports.consultarPorCliente = async (req, res) => {
     4 -> En mora
     5 -> Pago sobrepasa lo esperado
     6 -> En validación
+    7 -> Anticipado
     */
     exports.validarEstado = async (subcontrato, fecha, valor) => {
+/*         //consulta de pagos para verificar anticipado
+        console.log("entro")
+        let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
+        console.log(anticipado)
+        if (anticipado) {
+            await mAnticipado.actualizarSubContrato(true,subcontrato)
+          return {
+            estado: 7,
+          };
+        } */
         if (fecha >= new Date() && valor == 0) {
             return {
                 estado: 2
@@ -257,58 +269,68 @@ exports.consultarPorCliente = async (req, res) => {
                 estado: 6
             }
         } else {
-            //Consulta el valor plan segun la fecha
-            let novedadSubcontrato = await mNovedadSubContrato.consultarUltimaNovedad(subcontrato, fecha)
-            let valorPlan = novedadSubcontrato.valor
-            //Consulta los beneficiarios adicionales segun la fecha
-            let novedadBeneficiario = await mNovedadBeneficiario.consultarUltimaNovedad(subcontrato, fecha)
-            //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
-            let dtlSubContrato = await mSubContrato.consultarPorId(subcontrato)
-            //Iniciamos el valor de adicioanl y de mascota
-            let adicional = 0
-            let mascota = 0
-            //Validamos si este contrato tiene beneficiarios adicionales
-            if (novedadBeneficiario) {
-                let vlrAdicional = dtlSubContrato.adicional
-                let vlrMascota = dtlSubContrato.mascota
-                //Consolidad valores a pagar por beneficiarios adicionales y mascota.
-                novedadBeneficiario.forEach(beneficiario => {
-                    if (beneficiario.parentesco == 'MA') {
-                        mascota += vlrMascota
-                    } else {
-                        adicional += vlrAdicional
-                    }
-                });
-            }
-            let valorTotal = valorPlan + adicional + mascota
+          //Consulta el valor plan segun la fecha
+          let novedadSubcontrato =
+            await mNovedadSubContrato.consultarUltimaNovedad(
+              subcontrato,
+              fecha
+            );
+          let valorPlan = novedadSubcontrato.valor;
+          //Consulta los beneficiarios adicionales segun la fecha
+          let novedadBeneficiario =
+            await mNovedadBeneficiario.consultarUltimaNovedad(
+              subcontrato,
+              fecha
+            );
+          //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
+          let dtlSubContrato = await mSubContrato.consultarPorId(subcontrato);
+          //Iniciamos el valor de adicioanl y de mascota
+          let adicional = 0;
+          let mascota = 0;
+          
+          //Validamos si este contrato tiene beneficiarios adicionales
+          if (novedadBeneficiario) {
+            let vlrAdicional = dtlSubContrato.adicional;
+            let vlrMascota = dtlSubContrato.mascota;
+            //Consolidad valores a pagar por beneficiarios adicionales y mascota.
+            novedadBeneficiario.forEach((beneficiario) => {
+              if (beneficiario.parentesco == "MA") {
+                mascota += vlrMascota;
+              } else {
+                adicional += vlrAdicional;
+              }
+            });
+          }
+          let valorTotal = valorPlan + adicional + mascota;
 
-            if (valor == 0) {
-                //Validar estado si no se ha recibido pago pero esta dentro de los días de gabela
-                gabela = fecha.setDate(fecha.getDate() + process.env.DIAS_GABELA);
-                if (new Date() > gabela) {
-                    return {
-                        estado: 4,
-                        valorMes: valorTotal
-                    }
-                } else {
-                    return {
-                        estado: 2,
-                        valorMes: valorTotal
-                    }
-                }
-            } else if (valor > valorTotal) {
-                return {
-                    estado: 5
-                }
-            } else if (valor == valorTotal) {
-                return {
-                    estado: 1
-                }
-            } else if (valor < valorTotal) {
-                return {
-                    estado: 3,
-                    valorMes: valorTotal
-                }
+          if (valor == 0) {
+            //Validar estado si no se ha recibido pago pero esta dentro de los días de gabela
+            gabela = fecha.setDate(fecha.getDate() + process.env.DIAS_GABELA);
+            if (new Date() > gabela) {
+              return {
+                estado: 4,
+                valorMes: valorTotal,
+              };
+            } else {
+              return {
+                estado: 2,
+                valorMes: valorTotal,
+              };
             }
+          } else if (valor > valorTotal) {
+            return {
+              estado: 5,
+            };
+          } else if (valor == valorTotal) {
+            return {
+              estado: 1,
+            };
+          } else if (valor < valorTotal) {
+            return {
+              estado: 3,
+              valorMes: valorTotal,
+            };
+          }
+          
         }
     }
