@@ -43,119 +43,140 @@ exports.cargarMasivo = async (req, res) => {
         const contenidoCSV = atob(archivoEntrada);
         // Dividir el contenido en filas (registros)
         const filas = contenidoCSV.split('\n');
+        let archivoSalida = `${comunes.TITULOS}${comunes.SEPERADOR}`
+        //Valida si el archivo tiene registros para procesar
         if (filas && filas.length > 0) {
             // Iterar sobre cada fila de pago
             for (let i = 0; i < filas.length; i++) {
                 // Dividir la fila en columnas utilizando el punto y coma como separador
                 const columnas = filas[i].split(';');
+                //Validar si tiene 2 columnas cada registro
                 if (columnas && columnas.length == 2) {
                     let cliente = columnas[0]
                     let valor = columnas[1]
-                    //Consulta si existe el cliente
-                    let resultado = await mCliente.consultarPorDocumento(cliente)
-                    if (resultado.length > 0) {
-                        //Consultar subcontratos activos
-                        let subcontratos = await mSubContrato.consultarPorClienteActivo(cliente)
-                        if (subcontratos) {
-                            //Consultar estado de cuenta de cada uno de los subContratos vigentes
-                            for (let j = 0; j < subcontratos.length; j++) {
-                                let subcontrato = subcontratos[j];
-                                let fechaDia = new Date()
-                                let detalle = await this.obtenerDetalle(subcontrato.id)
-                                for (let k = 0; k < detalle.listaPagos.length; k++) {
-                                    let mes = detalle.listaPagos[k]
-                                    let valorPlan = detalle.valorPlan
-                                    let aplicado = 0
-                                    var bckValor = valor
-                                    if (valor > 0) {
-                                        try {
-                                            //Si el pago esta incompleto
-                                            if (mes.estado == 3) {
-                                                let faltante = mes.valorMes - mes.valor
-                                                if (valor >= faltante) {
-                                                    valor = valor - faltante
-                                                    //Actualizar registro de pago para dejar al día ese periodo
-                                                    aplicado = await mPago.modificarPago(mes.valorMes, mes.secuencia)
-                                                    if (aplicado > 0) {
-                                                        filas[i] = `${comunes.APLICADO};Se aplico pago a registro incompleto y quedo al día (Diferencia aplicada ${faltante});` + filas[i]
+                    //Valida si el valor a pagar es mayor a cero
+                    if (valor && valor > 0) {
+                        //Consulta si existe el cliente
+                        let resultado = await mCliente.consultarPorDocumento(cliente)
+                        if (resultado.length > 0) {
+                            //Consultar subcontratos activos
+                            let subcontratos = await mSubContrato.consultarPorClienteActivo(cliente)
+                            if (subcontratos) {
+                                //Almacenará el detalle de los pagos aplicados por registro
+                                let detallePagoRegistro = ''
+                                //Consultar estado de cuenta de cada uno de los subContratos vigentes
+                                for (let j = 0; j < subcontratos.length; j++) {
+                                    let subcontrato = subcontratos[j];
+                                    if (!subcontrato.anticipado) {
+                                        let fechaDia = new Date()
+                                        //Consulta el detalle de cada subcontrato para identificar el estado de cuenta
+                                        let detalle = await this.obtenerDetalle(subcontrato.id)
+                                        for (let k = 0; k < detalle.listaPagos.length; k++) {
+                                            let mes = detalle.listaPagos[k]
+                                            let valorPlan = detalle.valorPlan
+                                            //Bandera para saber si el insert o el update funcionarón
+                                            let aplicado = 0
+                                            //Se almacena valor en caso de que el pago no se pueda aplicar por un error, se restaura al valor anterior
+                                            var bckValor = valor
+                                            if (valor > 0) {
+                                                try {
+                                                    //Si el pago esta incompleto
+                                                    if (mes.estado == 3) {
+                                                        let faltante = mes.valorMes - mes.valor
+                                                        if (valor >= faltante) {
+                                                            valor = valor - faltante
+                                                            //Actualizar registro de pago para dejar al día ese periodo
+                                                            aplicado = await mPago.modificarPago(mes.valorMes, mes.secuencia)
+                                                            if (aplicado > 0) {
+                                                                detallePagoRegistro += `${comunes.SEPERADOR}*Se aplico pago (${subcontrato.id} - ${mes.mes}) a registro incompleto y quedo al día (Diferencia aplicada ${faltante})`
+                                                            }
+                                                        } else {
+                                                            //Actualizar registro de pago para reducir la diferencia
+                                                            aplicado = await mPago.modificarPago(mes.valor + valor, mes.secuencia)
+                                                            if (aplicado > 0) {
+                                                                detallePagoRegistro += `${comunes.SEPERADOR}*Se aplico pago (${subcontrato.id} - ${mes.mes}) a registro incompleto, sin embago no alcanzo a quedar al día (Diferencia aplicada ${valor})`
+                                                                valor = 0
+                                                            }
+                                                        }
                                                     }
-                                                } else {
-                                                    //Actualizar registro de pago para reducir la diferencia
-                                                    aplicado = await mPago.modificarPago(mes.valor + valor, mes.secuencia)
-                                                    if (aplicado > 0) {
-                                                        filas[i] = `${comunes.APLICADO};Se aplico pago a registro incompleto, sin embago no alcanzo a quedar al día (Diferencia aplicada ${valor});` + filas[i]
-                                                        valor = 0
+                                                    //Si el pago esta en mora
+                                                    else if (mes.estado == 4) {
+                                                        if (valor >= mes.valorMes) {
+                                                            valor = valor - mes.valorMes
+                                                            //Insertar registro de pago para dejar al día ese periodo
+                                                            aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, mes.valorMes, null, mes.mes)
+                                                            if (aplicado > 0) {
+                                                                detallePagoRegistro += `${comunes.SEPERADOR}*Se aplico pago (${subcontrato.id} - ${mes.mes}) a registro en mora y quedo al día (Valor aplicado ${mes.valorMes})`
+                                                            }
+                                                        } else {
+                                                            //Insertar registro de pago para reducir la mora
+                                                            aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, valor, null, mes.mes)
+                                                            if (aplicado > 0) {
+                                                                detallePagoRegistro += `${comunes.SEPERADOR}*Se aplico pago (${subcontrato.id} - ${mes.mes}) a registro en mora, sin embago no alcanzo a quedar al día (Valor aplicado ${valor})`
+                                                                valor = 0
+                                                            }
+                                                        }
                                                     }
+                                                    //Si el pago esta pendiente
+                                                    else if (mes.estado == 2) {
+                                                        if (valor >= valorPlan) {
+                                                            valor = valor - valorPlan
+                                                            //Insertar registro de pago en un periodo con estado pendiente
+                                                            aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, valorPlan, null, mes.mes)
+                                                            if (aplicado > 0) {
+                                                                detallePagoRegistro += `${comunes.SEPERADOR}*Se aplico pago (${subcontrato.id} - ${mes.mes}) a registro en estado pendiente (Valor aplicado ${valorPlan})`
+                                                            }
+                                                        } else {
+                                                            //Insertar registro de pago en un periodo con estado pendiente
+                                                            aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, valor, null, mes.mes)
+                                                            if (aplicado > 0) {
+                                                                detallePagoRegistro += `${comunes.SEPERADOR}*Se aplico pago (${subcontrato.id} - ${mes.mes}) a registro en estado pendiente (Valor aplicado ${valor})`
+                                                                valor = 0
+                                                            }
+                                                        }
+                                                    }
+                                                    if (aplicado == 0 && (mes.estado == 3 || mes.estado == 4 || mes.estado == 2)) {
+                                                        detallePagoRegistro += `${comunes.SEPERADOR}*No fue posible aplicar el pago  (${subcontrato.id} - ${mes.mes})`
+                                                        valor = bckValor
+                                                    }
+                                                } catch (error) {
+                                                    detallePagoRegistro += `${comunes.SEPERADOR}*No fue posible aplicar el pago  (${subcontrato.id} - ${mes.mes}) / Detalle: ${error}`
                                                 }
+                                            } else {
+                                                break
                                             }
-                                            //Si el pago esta en mora
-                                            else if (mes.estado == 4) {
-                                                if (valor >= mes.valorMes) {
-                                                    valor = valor - mes.valorMes
-                                                    //Insertar registro de pago para dejar al día ese periodo
-                                                    aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, mes.valorMes, null, mes.mes)
-                                                    if (aplicado > 0) {
-                                                        filas[i] = `${comunes.APLICADO};Se aplico pago a registro en mora y quedo al día (Valor aplicado ${mes.valorMes});` + filas[i]
-                                                    }
-                                                } else {
-                                                    //Insertar registro de pago para reducir la mora
-                                                    aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, valor, null, mes.mes)
-                                                    if (aplicado > 0) {
-                                                        filas[i] = `${comunes.APLICADO};Se aplico pago a registro en mora, sin embago no alcanzo a quedar al día (Valor aplicado ${valor});` + filas[i]
-                                                        valor = 0
-                                                    }
-                                                }
-                                            }
-                                            //Si el pago esta pendiente
-                                            else if (mes.estado == 2) {
-                                                if (valor >= valorPlan) {
-                                                    valor = valor - valorPlan
-                                                    //Insertar registro de pago en un periodo con estado pendiente
-                                                    aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, valorPlan, null, mes.mes)
-                                                    if (aplicado > 0) {
-                                                        filas[i] = `${comunes.APLICADO};Se aplico pago a registro en estado pendiente (Valor aplicado ${valorPlan});` + filas[i]
-                                                    }
-                                                } else {
-                                                    //Insertar registro de pago en un periodo con estado pendiente
-                                                    aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, valor, null, mes.mes)
-                                                    if (aplicado > 0) {
-                                                        filas[i] = `${comunes.APLICADO};Se aplico pago a registro en estado pendiente (Valor aplicado ${valor});` + filas[i]
-                                                        valor = 0
-                                                    }
-                                                }
-                                            }
-                                            if (aplicado == 0) {
-                                                filas[i] = `${comunes.NO_APLICADO};No fue posible aplicar el pago` + filas[i]
-                                                valor = bckValor
-                                            }
-                                        } catch (error) {
-                                            filas[i] = `${comunes.NO_APLICADO};No fue posible aplicar el pago. Detalle: ${error};` + filas[i]
                                         }
-                                    } else {
-                                        break
                                     }
                                 }
+                                if (valor == 0) {
+                                    filas[i] = `${comunes.APLICADO};"${detallePagoRegistro.replace(/\n/, "")}";` + filas[i]
+                                } else {
+                                    filas[i] = `${comunes.APLICADO_PARCIALMENTE};"${detallePagoRegistro.replace(/\n/, "")} - Valor pendiente de aplicar (${valor})";` + filas[i]
+                                }
+                            } else {
+                                filas[i] = `${comunes.NO_APLICADO};Cliente no tiene subcontratos activos;` + filas[i]
                             }
                         } else {
-                            filas[i] = `${comunes.NO_APLICADO};Cliente no tiene subcontratos activos;` + filas[i]
+                            filas[i] = `${comunes.NO_APLICADO};Cliente no existe;` + filas[i]
                         }
                     } else {
-                        filas[i] = `${comunes.NO_APLICADO};Cliente no existe;` + filas[i]
+                        filas[i] = `${comunes.NO_APLICADO};Valor invalido;` + filas[i]
                     }
-                    //filas[i] = "Pago aplicado;" + filas[i]
                 } else {
                     //Estructura invalida
                     filas[i] = `${comunes.NO_APLICADO};Estuctura invalida;` + filas[i]
                 }
+                archivoSalida += filas[i]
             }
         } else {
             //Archivo vacio
+            archivoSalida = comunes.SIN_REGISTROS
         }
-
+        var base64String = btoa(archivoSalida);
+        return res.send(comunes.respuestaExitosaElemento(base64String))
     } catch (error) {
-
+        return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(error))
     }
-    return res.send('Hola')
 }
 
 exports.consultarCliente = (req, res) => {
@@ -292,27 +313,27 @@ Reusltado:
 */
 exports.validarEstado = async (subcontrato, fecha, valor) => {
     //consulta de pagos para verificar anticipado y se actualiza el subcontrato
-    
+
     let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
     if (anticipado) {
-        await mAnticipado.actualizarSubContrato(true,subcontrato)
-      return {
-        estado: 7,
-      };
-    } 
-    if (fecha >= new Date() && valor == 0) {
-      //consulta de pagos para verificar anticipado y se actualiza el subcontrato
-
-      let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
-      if (anticipado) {
-        await mAnticipado.actualizarSubContrato(true, subcontrato);
+        await mAnticipado.actualizarSubContrato(true, subcontrato)
         return {
-          estado: 7,
+            estado: 7,
         };
-      }
-      return {
-        estado: 2,
-      };
+    }
+    if (fecha >= new Date() && valor == 0) {
+        //consulta de pagos para verificar anticipado y se actualiza el subcontrato
+
+        let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
+        if (anticipado) {
+            await mAnticipado.actualizarSubContrato(true, subcontrato);
+            return {
+                estado: 7,
+            };
+        }
+        return {
+            estado: 2,
+        };
     } else if (fecha >= new Date() && valor != 0) {
         return {
             estado: 6
@@ -372,7 +393,7 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
             }
         }
     }
-     
+
 }
 
 exports.consultarPagoTiempo = (req, res) => {

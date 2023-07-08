@@ -22,8 +22,23 @@ exports.modificarClave = (req, res) => {
     const { clave, id } = req.body
     modelo
         .modificarClave(clave, id)
-        .then(() => {
-            return res.send(comunes.respuestaModificacion())
+        .then((resultado) => {
+            if (resultado && resultado > 0) {
+                return res.send(comunes.respuestaModificacion())
+            } else {
+                return res.send(comunes.respuestaExcepcion('No fue posible modificar el usuario'))
+            }
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}
+
+exports.consultaGeneral = (req, res) => {
+    modelo
+        .consultaGeneral()
+        .then(resultados => {
+            return res.send(comunes.respuestaConsulta(resultados))
         })
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))

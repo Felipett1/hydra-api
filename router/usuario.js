@@ -4,6 +4,7 @@ const router = express.Router()
 const path = '/usuario'
 
 router.post(path + '/autenticar', controller.autenticar)
-router.put(path + '/clave', controller.modificarClave)
+router.post(path + '/clave', controller.modificarClave)
+router.get(path, controller.consultaGeneral)
 
 module.exports = router

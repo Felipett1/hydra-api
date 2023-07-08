@@ -15,8 +15,13 @@ module.exports = {
 	DTL_AUTENTICACION_FALLIDO: 'Usuario o contraseña invalida',
 	DTL_ERROR_CREACION_SUBCONTRATO: 'No es posible realizar la creación del subcontrato',
 	DTL_ERROR_CREACION_SERVICIO: 'No es posible realizar la creación del sevicio',
+	//CONSTANTES ARCHIVO SALIDA CARGUE MASIVO
 	APLICADO: 'APLICADO',
+	APLICADO_PARCIALMENTE: 'APLICADO PARCIALMENTE',
 	NO_APLICADO: 'NO APLICADO',
+	SEPERADOR: '\n',
+	TITULOS: 'ESTADO;DETALLE;DOCUMENTO;VALOR',
+	SIN_REGISTROS: 'Archivo vacio sin registros',
 	//CONSTANTES DE CORREO
 	DE: 'info@coboy.com.co',
 	ASUNTO_PR: '¡Se ha creado un nuevo pre registro!',
