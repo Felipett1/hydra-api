@@ -42,11 +42,14 @@ module.exports = {
     },
     async consultarServicioTiempo(fechaInicio, fechaFin) {
         const resultado = await conexion.query(
-            `SELECT s.secuencia as "ID", s.subcontrato as "Subcontrato", ts.nombre as "Servicio",
+            `SELECT s.secuencia as "ID", s.subcontrato as "Subcontrato",
+            sc.cliente as "Documento",
+            ts.nombre as "Servicio",
             to_char(s.fecha_inicial,'DD/MM/YYYY') as "Fecha inicial", s.detalle_inicial as "Detalle inicial",
             to_char(s.fecha_final,'DD/MM/YYYY') as "Fecha final", s.detalle_final as "Detalle final"
-            FROM servicio s, tipo_servicio ts
-            WHERE s.tipo_servicio = ts.id
+            FROM servicio s, tipo_servicio ts, subcontrato sc
+            WHERE s.tipo_servicio = ts.id 
+            AND s.subcontrato = sc.id
             AND (fecha_inicial between $1 AND $2
             OR fecha_final between $1 AND $2)`
             , [fechaInicio, fechaFin]);

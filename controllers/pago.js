@@ -118,7 +118,7 @@ exports.cargarMasivo = async (req, res) => {
                                                         }
                                                     }
                                                     //Si el pago esta pendiente
-                                                    else if (mes.estado == 2) {
+                                                    else if (mes.estado == 2 && (j == subcontratos.length - 1)) {
                                                         if (valor >= valorPlan) {
                                                             valor = valor - valorPlan
                                                             //Insertar registro de pago en un periodo con estado pendiente
