@@ -135,7 +135,7 @@ exports.cargarMasivo = async (req, res) => {
                                                             }
                                                         }
                                                     }
-                                                    if (aplicado == 0 && (mes.estado == 3 || mes.estado == 4 || mes.estado == 2)) {
+                                                    if (aplicado == 0 && (mes.estado == 3 || mes.estado == 4)) {
                                                         detallePagoRegistro += `${comunes.SEPERADOR}*No fue posible aplicar el pago  (${subcontrato.id} - ${mes.mes})`
                                                         valor = bckValor
                                                     }
