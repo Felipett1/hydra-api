@@ -77,4 +77,8 @@ module.exports = {
         const resultados = await conexion.query("select * from subcontrato where cliente = $1 and  estado = true", [cliente]);
         return (resultados.rows.length > 0 ? resultados.rows : false);
     },
+    async consultarPorIdActivo(id, cliente) {
+        const resultados = await conexion.query(`select * from subcontrato where id = $1 and cliente = $2 and estado = true`, [id, cliente]);
+        return (resultados.rows.length > 0 ? resultados.rows : false);
+    }
 }

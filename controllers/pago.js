@@ -50,17 +50,19 @@ exports.cargarMasivo = async (req, res) => {
             for (let i = 0; i < filas.length; i++) {
                 // Dividir la fila en columnas utilizando el punto y coma como separador
                 const columnas = filas[i].split(';');
-                //Validar si tiene 2 columnas cada registro
-                if (columnas && columnas.length == 2) {
+                //Validar si tiene 3 columnas cada registro
+                if (columnas && columnas.length == 3) {
                     let cliente = columnas[0]
-                    let valor = columnas[1]
+                    let sub = columnas[1]
+                    let valor = columnas[2]
                     //Valida si el valor a pagar es mayor a cero
                     if (valor && valor > 0) {
                         //Consulta si existe el cliente
                         let resultado = await mCliente.consultarPorDocumento(cliente)
                         if (resultado.length > 0) {
                             //Consultar subcontratos activos
-                            let subcontratos = await mSubContrato.consultarPorClienteActivo(cliente)
+                            //let subcontratos = await mSubContrato.consultarPorClienteActivo(cliente)
+                            let subcontratos = await mSubContrato.consultarPorIdActivo(sub, cliente)
                             if (subcontratos) {
                                 //Almacenará el detalle de los pagos aplicados por registro
                                 let detallePagoRegistro = ''
@@ -154,7 +156,7 @@ exports.cargarMasivo = async (req, res) => {
                                     filas[i] = `${comunes.APLICADO_PARCIALMENTE};"${detallePagoRegistro.replace(/\n/, "")} - Valor pendiente de aplicar (${valor})";` + filas[i]
                                 }
                             } else {
-                                filas[i] = `${comunes.NO_APLICADO};Cliente no tiene subcontratos activos;` + filas[i]
+                                filas[i] = `${comunes.NO_APLICADO};Subcontrato no esta activo, no existe o no corresponde al cliente;` + filas[i]
                             }
                         } else {
                             filas[i] = `${comunes.NO_APLICADO};Cliente no existe;` + filas[i]
@@ -240,6 +242,9 @@ exports.obtenerDetalle = async (subcontrato) => {
         //Iniciamos el valor de adicioanl y de mascota
         let adicional = 0
         let mascota = 0
+        let estadoPlan = dtlSubContrato.estado
+        let documento = dtlSubContrato.cliente
+        let grado = dtlSubContrato.grado
         //Validamos si este contrato tiene beneficiarios adicionales
         if (novedadBeneficiario) {
             let vlrAdicional = dtlSubContrato.adicional
@@ -292,6 +297,9 @@ exports.obtenerDetalle = async (subcontrato) => {
             valorPlan,
             adicional,
             mascota,
+            estadoPlan,
+            documento,
+            grado,
             totalCuota: valorPlan + adicional + mascota,
             listaPagos,
         }
@@ -406,4 +414,39 @@ exports.consultarPagoTiempo = (req, res) => {
         .catch(err => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
+}
+
+exports.dejarAlDia = async (req, res) => {
+    try {
+        const { subcontratos } = req.body
+        for (let i = 0; i < subcontratos.length; i++) {
+            const id = subcontratos[i];
+            //Consultar subcontrato
+            let subcontrato = await mSubContrato.consultarPorId(id)
+            if (!subcontrato.anticipado && subcontrato.estado) {
+                let fechaDia = new Date()
+                fechaDia.setHours(0, 0, 0, 0)
+                //Consulta el detalle de cada subcontrato para identificar el estado de cuenta
+                let detalle = await this.obtenerDetalle(subcontrato.id)
+                for (let k = 0; k < detalle.listaPagos.length; k++) {
+                    let mes = detalle.listaPagos[k]
+                    try {
+                        //Si el pago esta incompleto
+                        if (mes.estado == 3) {
+                            aplicado = await mPago.modificarPago(mes.valorMes, mes.secuencia)
+                        }
+                        //Si el pago esta en mora
+                        else if (mes.estado == 4) {
+                            aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, mes.valorMes, null, mes.mes)
+                        }
+                    } catch (error) {
+                        console.log('No fue posible aplicar el pago')
+                    }
+                }
+            }
+        }
+        return res.send(comunes.respuestaGenerica())
+    } catch (error) {
+        return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(error))
+    }
 }

@@ -10,4 +10,5 @@ router.put(path + '/cargar', controller.cargar)
 router.put(path + '/valor', controller.modificarPago)
 router.post(path + '/masivo', controller.cargarMasivo)
 router.post(path + '/reporte', controller.consultarPagoTiempo)
+router.post(path + '/aldia', controller.dejarAlDia)
 module.exports = router

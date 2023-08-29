@@ -5,6 +5,7 @@ const path = '/servicio'
 
 router.post(path + '/subcontrato/cerrado', controller.consultarSubContratoCerrado)
 router.post(path + '/subcontrato/activo', controller.consultarSubContratoActivo)
+router.post(path + '/subcontrato', controller.consultarSubContratoGeneral)
 router.get(path + '/documento', controller.consultarDocumento)
 router.put(path, controller.crear)
 router.get(path, controller.consultarServicio)

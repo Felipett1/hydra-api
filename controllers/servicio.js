@@ -24,7 +24,17 @@ exports.consultarSubContratoActivo = (req, res) => {
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
         })
 }
-
+exports.consultarSubContratoGeneral = (req, res) => {
+    const { id } = req.body
+    modelo
+        .consultarSubContratoGeneral(id)
+        .then((resultado) => {
+            return res.send(comunes.respuestaConsulta(resultado))
+        })
+        .catch(err => {
+            return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+        })
+}
 exports.consultarDocumento = (req, res) => {
     const { documento } = req.body
     modelo

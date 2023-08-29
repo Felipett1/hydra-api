@@ -13,6 +13,11 @@ module.exports = {
         from servicio s, subcontrato sc, cliente a, tipo_servicio ts where s.subcontrato = sc.id and sc.cliente = a.documento and s.tipo_servicio = ts.id and sc.id = $1 and s.fecha_final is null`, [id]);
         return resultado.rows;
     },
+    async consultarSubContratoGeneral(id) {
+        const resultado = await conexion.query(`select a.documento, a.nombre_completo, sc.estado, sc.celular, sc.telefono, s.secuencia, s.fecha_inicial, ts.nombre as tipo, ts.correo as correo, s.detalle_inicial, s.fecha_final, s.detalle_final, s.contacto    
+        from servicio s, subcontrato sc, cliente a, tipo_servicio ts where s.subcontrato = sc.id and sc.cliente = a.documento and s.tipo_servicio = ts.id and sc.id = $1`, [id]);
+        return resultado.rows;
+    },
     async consultarDocumento(documento) {
         const resultado = await conexion.query(`select sc.id, a.documento, a.nombre_completo, sc.estado, sc.celular, sc.telefono, s.secuencia, s.fecha_inicial, s.tipo_servicio, s.detalle_inicial, s.contacto
         from servicio s, subcontrato sc, cliente a where s.subcontrato = sc.id and sc.cliente = a.documento and a.documento = $1`, [documento]);
