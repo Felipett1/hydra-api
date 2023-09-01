@@ -277,6 +277,8 @@ exports.obtenerDetalle = async (subcontrato) => {
                         validacion = await this.validarEstado(subcontrato, fecha, pago.valor)
                         pago.estado = validacion.estado
                         pago.valorMes = validacion.valorMes
+                        pago.mesN = fecha.getMonth() + 1
+                        pago.anio = fecha.getFullYear()
                         listaPagos.push(pago)
                         aplico = true
                     }
@@ -284,11 +286,11 @@ exports.obtenerDetalle = async (subcontrato) => {
 
                 if (!aplico) {
                     validacion = await this.validarEstado(subcontrato, fecha, 0)
-                    listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
+                    listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes, (fecha.getMonth() + 1), fecha.getFullYear()))
                 }
             } else {
                 validacion = await this.validarEstado(subcontrato, fecha, 0)
-                listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
+                listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes, (fecha.getMonth() + 1), fecha.getFullYear()))
             }
             fecha = comunes.agregarMes(fecha, diaSubContrato)
         }

@@ -37,7 +37,7 @@ module.exports = {
 	PARA_SS: 'felipe.trivino@coboy.com.co',
 	//OBJETOS COMUNES
 	estado: (codigo, mensaje, detalle) => ({ codigo, mensaje, detalle }),
-	pagoGenerico: (periodo, valor, mes, estado, valorMes) => ({ periodo, valor, mes, estado, valorMes }),
+	pagoGenerico: (periodo, valor, mes, estado, valorMes, mesN, anio) => ({ periodo, valor, mes, estado, valorMes, mesN, anio }),
 	/*
 	Autor: Felipe Triviño
 	Fecha: 05/10/222
