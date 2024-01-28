@@ -3,6 +3,10 @@ const controller = require("../controllers/beneficiario")
 const router = express.Router()
 const path = '/beneficiario'
 
-router.post(path, controller.crear)
-
+router.post(path, controller.consultar)
+router.post(path + "/crear", controller.crear)
+router.put(path, controller.modificar)
+router.put(path + "/emoji", controller.modificarEmoji)
+router.delete(path, controller.cambiarEstado)
+router.get(path + '/:secuencia', controller.consultarPorSecuencia)
 module.exports = router

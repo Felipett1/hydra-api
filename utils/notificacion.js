@@ -1,6 +1,10 @@
 const fs = require('fs');
 const correo = require("../config/correo");
 const comunes = require("../config/comunes")
+const preRegistro = require("../storage/notificaciones/pre_registro")
+const recuperacion = require("../storage/notificaciones/recuperacion")
+const servicio = require("../storage/notificaciones/servicio")
+const solicitud = require("../storage/notificaciones/solicitud")
 
 /*
 Autor: Felipe Triviño
@@ -11,7 +15,7 @@ Tipo de notificaciones:
 2 -> Creacion de servicio
 3 -> ANS
 4 -> Solicitud de servicio
-5 -> Renovación contrato
+5 -> Renovación Subcontrato
 */
 exports.enviarCorreo = async (para, tipoNotificacion, cargaUtil) => {
     const transporter = correo
@@ -20,7 +24,7 @@ exports.enviarCorreo = async (para, tipoNotificacion, cargaUtil) => {
             from: comunes.DE,
             to: para,
             subject: validarAsunto(tipoNotificacion),
-            html: validarNotificacion(tipoNotificacion)
+            html: validarNotificacion(tipoNotificacion, cargaUtil)
         })
         console.log("Mensaje enviado con el id: " + info.messageId)
         return info.messageId
@@ -38,31 +42,30 @@ Tipo de notificaciones:
 2 -> Creacion de servicio
 3 -> ANS
 4 -> Solicitud de servicio
-5 -> Renovación contrato
+5 -> Renovación Subcontrato
+6 -> Recuperación de contraseña
 */
-function validarNotificacion(tipoNotificacion) {
+function validarNotificacion(tipoNotificacion, datos) {
     try {
         let data
         switch (tipoNotificacion) {
             case 1:
-                console.log('Notificación de pre registro');
-                data = fs.readFileSync('./storage/notificaciones/pre_registro.html', 'utf8');
+                data = preRegistro.mensaje(datos)
                 return data
             case 2:
-                console.log('Notificación creación de servicio');
-                data = fs.readFileSync('./storage/notificaciones/servicio.html', 'utf8');
+                data = servicio.mensaje(datos)
                 return data
             case 3:
-                console.log('Notificación de ANS');
                 data = fs.readFileSync('./storage/notificaciones/ans.html', 'utf8');
                 return data
             case 4:
-                console.log('Notificación solicitud nuevo servicio');
-                data = fs.readFileSync('./storage/notificaciones/solicitud.html', 'utf8');
+                data = solicitud.mensaje(datos)
                 return data
             case 5:
-                console.log('Notificación de renovación');
                 data = fs.readFileSync('./storage/notificaciones/renovacion.html', 'utf8');
+                return data
+            case 6:
+                data = recuperacion.mensaje(datos)
                 return data
             default:
                 console.log('No se reconoce el tipo de notificación')
@@ -86,6 +89,8 @@ function validarAsunto(tipoNotificacion) {
                 return comunes.ASUNTO_SS
             case 5:
                 return comunes.ASUNTO_RC
+            case 6:
+                return comunes.ASUNTO_RP
             default:
                 console.log('No se reconoce el tipo de notificación')
         }
