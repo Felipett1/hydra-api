@@ -417,8 +417,6 @@ exports.dejarAlDia = async (req, res) => {
             //Consultar subcontrato
             let subcontrato = await mSubContrato.consultarPorId(id)
             if (!subcontrato.anticipado && subcontrato.estado) {
-                let fechaDia = new Date()
-                fechaDia.setHours(0, 0, 0, 0)
                 //Consulta el detalle de cada subcontrato para identificar el estado de cuenta
                 let detalle = await this.obtenerDetalle(subcontrato.id)
                 for (let k = 0; k < detalle.listaPagos.length; k++) {
@@ -430,6 +428,11 @@ exports.dejarAlDia = async (req, res) => {
                         }
                         //Si el pago esta en mora
                         else if (mes.estado == 4) {
+                            let fechaDia = new Date()
+                            fechaDia.setFullYear(mes.anio)
+                            fechaDia.setMonth(mes.mesN - 1)
+                            fechaDia.setDate(1)
+                            fechaDia.setHours(0, 0, 0, 0)
                             aplicado = await mPago.cargar(subcontrato.id, fechaDia, mes.periodo, mes.valorMes, null, mes.mes)
                         }
                     } catch (error) {
