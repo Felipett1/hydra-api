@@ -14,7 +14,8 @@ module.exports = {
 	DTL_AUTENTICACION_EXITOSO: 'Autenticación exitosa',
 	DTL_AUTENTICACION_FALLIDO: 'Usuario o contraseña invalida',
 	DTL_ERROR_CREACION_SUBCONTRATO: 'No es posible realizar la creación del subcontrato',
-	DTL_ERROR_CREACION_SERVICIO: 'No es posible realizar la creación del sevicio',
+	DTL_ERROR_CREACION_SERVICIO: 'No es posible realizar la creación del servicio',
+	DTL_ERROR_CIERRE_SERVICIO: 'No es posible realizar el cierre del servicio',
 	//CONSTANTES ARCHIVO SALIDA CARGUE MASIVO
 	APLICADO: 'APLICADO',
 	APLICADO_PARCIALMENTE: 'APLICADO PARCIALMENTE',

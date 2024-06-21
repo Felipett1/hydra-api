@@ -11,6 +11,7 @@ const routeServicio = require("../hydra-api/router/servicio")
 const routeNotificacion = require("../hydra-api/router/notificacion")
 const routePago = require("../hydra-api/router/pago")
 const routePago_anticipado = require("../hydra-api/router/pago_anticipado")
+const routeNovedadServicio = require("../hydra-api/router/novedad_servicio")
 //Variables
 const app = express()
 
@@ -47,6 +48,7 @@ app.use(routeServicio)
 app.use(routeNotificacion)
 app.use(routePago)
 app.use(routePago_anticipado)
+app.use(routeNovedadServicio)
 
 app.listen(port, () => {
     console.log(`La aplicación esta en linea por el puerto ${port}`)
