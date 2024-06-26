@@ -14,9 +14,9 @@ exports.consultar = (req, res) => {
 }
 
 exports.crear = (req, res) => {
-    const { servicio, novedad, detalle } = req.body
+    const { servicio, novedad, detalle, usuario } = req.body
     modelo
-        .crear(servicio, novedad, detalle)
+        .crear(servicio, novedad, detalle, usuario)
         .then(resultado => {
             if (resultado && resultado > 0) {
                 return res.send(comunes.respuestaCreacion())

@@ -80,5 +80,43 @@ module.exports = {
     async consultarPorIdActivo(id, cliente) {
         const resultados = await conexion.query(`select * from subcontrato where id = $1 and cliente = $2 and estado = true`, [id, cliente]);
         return (resultados.rows.length > 0 ? resultados.rows : false);
+    },
+
+    async consultaReporteGeneral() {
+        const resultados = await conexion.query(
+            `SELECT 
+                sc.id as "# Subcontrato",
+                c.documento as "Documento",
+                c.nombre_completo as "Nombre completo",
+                sc.valor_total as "Valor",
+                COALESCE(servicios_abiertos, 0) as "Servicios Abiertos",
+                COALESCE(servicios_cerrados, 0) as "Servicios Cerrados",
+                COALESCE(cuotas_pagas, 0) as "Cuotas pagas",
+                sc.cuotas as "Cuotas totales"
+            FROM 
+                subcontrato sc
+            JOIN 
+                cliente c ON sc.cliente = c.documento
+            LEFT JOIN 
+                (SELECT 
+                    subcontrato, 
+                    SUM(CASE WHEN cerrado = false THEN 1 ELSE 0 END) AS servicios_abiertos,
+                    SUM(CASE WHEN cerrado = true THEN 1 ELSE 0 END) AS servicios_cerrados
+                FROM 
+                    servicio 
+                GROUP BY 
+                    subcontrato) s ON sc.id = s.subcontrato
+            LEFT JOIN 
+                (SELECT 
+                    subcontrato, 
+                    COUNT(periodo) AS cuotas_pagas
+                FROM 
+                    pago 
+                GROUP BY 
+                    subcontrato) p ON sc.id = p.subcontrato
+            ORDER BY 
+                sc.id;`);
+        return (resultados.rows.length > 0 ? resultados.rows : false);
     }
+
 }

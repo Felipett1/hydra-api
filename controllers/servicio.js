@@ -53,12 +53,12 @@ exports.consultarDocumento = (req, res) => {
 }
 
 exports.crear = (req, res) => {
-    const { subcontrato, tipo_servicio, detalle_inicial, contacto } = req.body
+    const { subcontrato, tipo_servicio, detalle_inicial, contacto, usuario } = req.body
     modelo
-        .crear(subcontrato, tipo_servicio, contacto)
+        .crear(subcontrato, tipo_servicio, contacto, usuario)
         .then(async (respuesta) => {
             if (respuesta) {
-                respuesta = await modeloNovedad.crear(respuesta[0].secuencia, 'Creación', detalle_inicial)
+                respuesta = await modeloNovedad.crear(respuesta[0].secuencia, 'Creación', detalle_inicial, usuario)
                 if (respuesta > 0) {
                     return res.send(comunes.respuestaCreacion())
                 }
@@ -71,13 +71,13 @@ exports.crear = (req, res) => {
 }
 
 exports.cerrarServicio = (req, res) => {
-    const { detalle_final, secuencia } = req.body
+    const { detalle_final, secuencia, usuario } = req.body
 
     modelo
         .cerrarServicio(secuencia)
         .then(async (respuesta) => {
             if (respuesta > 0) {
-                respuesta = await modeloNovedad.crear(secuencia, 'Cierre', detalle_final)
+                respuesta = await modeloNovedad.crear(secuencia, 'Cierre', detalle_final, usuario)
                 if (respuesta > 0) {
                     return res.send(comunes.respuestaModificacion())
                 }

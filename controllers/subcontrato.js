@@ -184,153 +184,184 @@ exports.consultarPorCliente = async (req, res) => {
     exports.consultarEstadoSubContrato = async (req, res) => {
         try {
             const { id } = req.body
-            var subcontrato = id
-            //Consulta el valor plan a la fecha
-            let novedadSubcontrato = await mNovedadSubContrato.consultarUltimaNovedad(subcontrato, new Date())
-            //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
-            let dtlSubContrato = await mSubContrato.consultarPorId(subcontrato)
-            //Consulta pagos registrados
-            let pagos = await mPago.consultarSubContratoDetalle(subcontrato)
-            //Completar meses que no tienen pago
-            let listaPagos = []
-            //Se obtiene la fecha inicial del contrato
-            let fecha = new Date(dtlSubContrato.fecha_inicio)
-            //Obtiene el día del inicio del subcontrato
-            let diaSubContrato = fecha.getDate();
-            for (let i = 1; i <= novedadSubcontrato.cuotas; i++) {
-                aplico = false
-                if (pagos) {
-                    for (let j = 0; j < pagos.length; j++) {
-                        const pago = pagos[j];
-                        if (pago.periodo == i && !aplico) {
-                            validacion = await this.validarEstado(subcontrato, fecha, pago.valor)
-                            pago.estado = validacion.estado
-                            pago.valorMes = validacion.valorMes
-                            listaPagos.push(pago)
-                            aplico = true
-                        }
-                    }
-
-                    if (!aplico) {
-                        validacion = await this.validarEstado(subcontrato, fecha, 0)
-                        listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
-                    }
-                } else {
-                    validacion = await this.validarEstado(subcontrato, fecha, 0)
-                    listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
-                }
-                fecha = comunes.agregarMes(fecha, diaSubContrato)
-            }
-
-            if (listaPagos) {
-                estadoMora = false
-                for (let i = 0; i < listaPagos.length; i++) {
-                    const pago = listaPagos[i];
-                    //Verifica si alguno de los pagos registrados esta incompleto o esta en mora
-                    if (pago.estado == 3 || pago.estado == 4) {
-                        estadoMora = true
-                        break
-                    }
-                }
-            }
+            estadoMora = await this.logicaEstado(id)
             return res.send(comunes.respuestaExitosaElemento(estadoMora))
         } catch (error) {
             console.log(error)
             return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(error))
         }
     },
-    /*
-    Reusltado:
-    1 -> Al día
-    2 -> Pendiente
-    3 -> Incompleto
-    4 -> En mora
-    5 -> Pago sobrepasa lo esperado
-    6 -> En validación
-    7 -> Anticipado
-    */
-    exports.validarEstado = async (subcontrato, fecha, valor) => {
-/*         //consulta de pagos para verificar anticipado
-        console.log("entro")
-        let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
-        console.log(anticipado)
-        if (anticipado) {
-            await mAnticipado.actualizarSubContrato(true,subcontrato)
-          return {
-            estado: 7,
-          };
-        } */
-        if (fecha >= new Date() && valor == 0) {
-            return {
-                estado: 2
-            }
-        } else if (fecha >= new Date() && valor != 0) {
-            return {
-                estado: 6
-            }
-        } else {
-          //Consulta el valor plan segun la fecha
-          let novedadSubcontrato =
+
+    exports.consultarReporteGeneral = (req, res) => {
+        modelo
+            .consultaReporteGeneral()
+            .then(async resultados => {
+                /*let respuesta = [];
+                if (resultados && resultados.length > 0) {
+                    for (let i = 0; i < resultados.length; i++) {
+                        const r = resultados[i];
+                        let entry = {
+                            ...r
+                        };
+                        estadoMora = await this.logicaEstado(r['# Subcontrato'])
+                        entry['Estado'] = estadoMora ? 'En Mora' : 'Al día'
+                        respuesta.push(entry);
+                    }
+                }
+                return res.send(comunes.respuestaConsulta(respuesta))*/
+                return res.send(comunes.respuestaConsulta(resultados))
+            })
+            .catch(err => {
+                return res.status(comunes.COD_500).send(comunes.respuestaExcepcion(err))
+            })
+    }
+
+/*
+Reusltado:
+1 -> Al día
+2 -> Pendiente
+3 -> Incompleto
+4 -> En mora
+5 -> Pago sobrepasa lo esperado
+6 -> En validación
+7 -> Anticipado
+*/
+exports.validarEstado = async (subcontrato, fecha, valor) => {
+    /*         //consulta de pagos para verificar anticipado
+            console.log("entro")
+            let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
+            console.log(anticipado)
+            if (anticipado) {
+                await mAnticipado.actualizarSubContrato(true,subcontrato)
+              return {
+                estado: 7,
+              };
+            } */
+    if (fecha >= new Date() && valor == 0) {
+        return {
+            estado: 2
+        }
+    } else if (fecha >= new Date() && valor != 0) {
+        return {
+            estado: 6
+        }
+    } else {
+        //Consulta el valor plan segun la fecha
+        let novedadSubcontrato =
             await mNovedadSubContrato.consultarUltimaNovedad(
-              subcontrato,
-              fecha
+                subcontrato,
+                fecha
             );
-          let valorPlan = novedadSubcontrato.valor;
-          //Consulta los beneficiarios adicionales segun la fecha
-          let novedadBeneficiario =
+        let valorPlan = novedadSubcontrato.valor;
+        //Consulta los beneficiarios adicionales segun la fecha
+        let novedadBeneficiario =
             await mNovedadBeneficiario.consultarUltimaNovedad(
-              subcontrato,
-              fecha
+                subcontrato,
+                fecha
             );
-          //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
-          let dtlSubContrato = await mSubContrato.consultarPorId(subcontrato);
-          //Iniciamos el valor de adicioanl y de mascota
-          let adicional = 0;
-          let mascota = 0;
-          
-          //Validamos si este contrato tiene beneficiarios adicionales
-          if (novedadBeneficiario) {
+        //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
+        let dtlSubContrato = await mSubContrato.consultarPorId(subcontrato);
+        //Iniciamos el valor de adicioanl y de mascota
+        let adicional = 0;
+        let mascota = 0;
+
+        //Validamos si este contrato tiene beneficiarios adicionales
+        if (novedadBeneficiario) {
             let vlrAdicional = dtlSubContrato.adicional;
             let vlrMascota = dtlSubContrato.mascota;
             //Consolidad valores a pagar por beneficiarios adicionales y mascota.
             novedadBeneficiario.forEach((beneficiario) => {
-              if (beneficiario.parentesco == "MA") {
-                mascota += vlrMascota;
-              } else {
-                adicional += vlrAdicional;
-              }
+                if (beneficiario.parentesco == "MA") {
+                    mascota += vlrMascota;
+                } else {
+                    adicional += vlrAdicional;
+                }
             });
-          }
-          let valorTotal = valorPlan + adicional + mascota;
+        }
+        let valorTotal = valorPlan + adicional + mascota;
 
-          if (valor == 0) {
+        if (valor == 0) {
             //Validar estado si no se ha recibido pago pero esta dentro de los días de gabela
             gabela = fecha.setDate(fecha.getDate() + process.env.DIAS_GABELA);
             if (new Date() > gabela) {
-              return {
-                estado: 4,
-                valorMes: valorTotal,
-              };
+                return {
+                    estado: 4,
+                    valorMes: valorTotal,
+                };
             } else {
-              return {
-                estado: 2,
-                valorMes: valorTotal,
-              };
+                return {
+                    estado: 2,
+                    valorMes: valorTotal,
+                };
             }
-          } else if (valor > valorTotal) {
+        } else if (valor > valorTotal) {
             return {
-              estado: 5,
+                estado: 5,
             };
-          } else if (valor == valorTotal) {
+        } else if (valor == valorTotal) {
             return {
-              estado: 1,
+                estado: 1,
             };
-          } else if (valor < valorTotal) {
+        } else if (valor < valorTotal) {
             return {
-              estado: 3,
-              valorMes: valorTotal,
+                estado: 3,
+                valorMes: valorTotal,
             };
-          }
-          
         }
+
     }
+}
+
+exports.logicaEstado = async (id) => {
+    var subcontrato = id
+    //Consulta el valor plan a la fecha
+    let novedadSubcontrato = await mNovedadSubContrato.consultarUltimaNovedad(subcontrato, new Date())
+    //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
+    let dtlSubContrato = await mSubContrato.consultarPorId(subcontrato)
+    //Consulta pagos registrados
+    let pagos = await mPago.consultarSubContratoDetalle(subcontrato)
+    //Completar meses que no tienen pago
+    let listaPagos = []
+    //Se obtiene la fecha inicial del contrato
+    let fecha = new Date(dtlSubContrato.fecha_inicio)
+    //Obtiene el día del inicio del subcontrato
+    let diaSubContrato = fecha.getDate();
+    for (let i = 1; i <= novedadSubcontrato.cuotas; i++) {
+        aplico = false
+        if (pagos) {
+            for (let j = 0; j < pagos.length; j++) {
+                const pago = pagos[j];
+                if (pago.periodo == i && !aplico) {
+                    validacion = await this.validarEstado(subcontrato, fecha, pago.valor)
+                    pago.estado = validacion.estado
+                    pago.valorMes = validacion.valorMes
+                    listaPagos.push(pago)
+                    aplico = true
+                }
+            }
+
+            if (!aplico) {
+                validacion = await this.validarEstado(subcontrato, fecha, 0)
+                listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
+            }
+        } else {
+            validacion = await this.validarEstado(subcontrato, fecha, 0)
+            listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
+        }
+        fecha = comunes.agregarMes(fecha, diaSubContrato)
+    }
+
+    if (listaPagos) {
+        estadoMora = false
+        for (let i = 0; i < listaPagos.length; i++) {
+            const pago = listaPagos[i];
+            //Verifica si alguno de los pagos registrados esta incompleto o esta en mora
+            if (pago.estado == 3 || pago.estado == 4) {
+                estadoMora = true
+                break
+            }
+        }
+        return estadoMora
+    }
+    return true
+}

@@ -15,7 +15,8 @@ module.exports = {
     },
     async consultarSubContratoGeneral(id) {
         const resultado = await conexion.query(`select a.documento, a.nombre_completo, sc.estado, sc.celular, sc.telefono, s.secuencia, ts.nombre as tipo, ts.correo as correo, s.contacto, s.cerrado    
-        from servicio s, subcontrato sc, cliente a, tipo_servicio ts where s.subcontrato = sc.id and sc.cliente = a.documento and s.tipo_servicio = ts.id and sc.id = $1`, [id]);
+        from servicio s, subcontrato sc, cliente a, tipo_servicio ts where s.subcontrato = sc.id and sc.cliente = a.documento and s.tipo_servicio = ts.id and sc.id = $1 
+        order by s.cerrado ASC, s.secuencia DESC`, [id]);
         return resultado.rows;
     },
     async consultarDocumento(documento) {

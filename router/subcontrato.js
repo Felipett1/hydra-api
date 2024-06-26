@@ -14,5 +14,6 @@ router.put(path + '/valorId', controller.modificarValorId)
 router.put(path + '/valorCliente', controller.modificarValorCliente)
 router.put(path + '/estadoId', controller.modificarEstadoId)
 router.put(path + '/estadoCliente', controller.modificarEstadoCliente)
+router.get(path + '/reporte', controller.consultarReporteGeneral)
 
 module.exports = router
