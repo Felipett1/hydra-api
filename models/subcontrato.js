@@ -89,6 +89,7 @@ module.exports = {
                 c.documento as "Documento",
                 c.nombre_completo as "Nombre completo",
                 sc.valor_total as "Valor",
+				sc.dependencia as "Pagaduria",
                 COALESCE(servicios_abiertos, 0) as "Servicios Abiertos",
                 COALESCE(servicios_cerrados, 0) as "Servicios Cerrados",
                 COALESCE(cuotas_pagas, 0) as "Cuotas pagas",
