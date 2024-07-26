@@ -88,6 +88,8 @@ module.exports = {
                 sc.id as "# Subcontrato",
                 c.documento as "Documento",
                 c.nombre_completo as "Nombre completo",
+				sc.celular as "Celular",
+				sc.telefono as "Telefono",
                 sc.valor_total as "Valor",
 				sc.dependencia as "Pagaduria",
                 COALESCE(servicios_abiertos, 0) as "Servicios Abiertos",
