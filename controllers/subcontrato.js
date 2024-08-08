@@ -282,7 +282,8 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
 
         if (valor == 0) {
             //Validar estado si no se ha recibido pago pero esta dentro de los días de gabela
-            gabela = fecha.setDate(fecha.getDate() + process.env.DIAS_GABELA);
+            gabela = new Date(fecha) 
+            gabela = gabela.setDate(gabela.getDate() + parseInt(process.env.DIAS_GABELA));
             if (new Date() > gabela) {
                 return {
                     estado: 4,
@@ -349,8 +350,8 @@ exports.logicaEstado = async (id) => {
             listaPagos.push(comunes.pagoGenerico(i, 0, comunes.obtenerMesAnio(fecha), validacion.estado, validacion.valorMes))
         }
         fecha = comunes.agregarMes(fecha, diaSubContrato)
+        
     }
-
     if (listaPagos) {
         estadoMora = false
         for (let i = 0; i < listaPagos.length; i++) {
