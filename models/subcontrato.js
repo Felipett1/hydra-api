@@ -97,7 +97,7 @@ module.exports = {
                 COALESCE(cuotas_pagas, 0) as "Cuotas pagas",
                 sc.cuotas as "Cuotas totales",
 				sc.fecha_inicio as "Fecha Inicio",
-				CASE WHEN sc.estado THEN 'Activo' ELSE 'Cerrado' END AS Estado
+				CASE WHEN sc.estado THEN 'Activo' ELSE 'Cerrado' END AS "Estado"
             FROM 
                 subcontrato sc
             JOIN 
