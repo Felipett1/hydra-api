@@ -18,19 +18,20 @@ Tipo de notificaciones:
 5 -> Renovación Subcontrato
 */
 exports.enviarCorreo = async (para, tipoNotificacion, cargaUtil) => {
-    const transporter = correo
-    try {
-        const info = await transporter.sendMail({
-            from: comunes.DE,
-            to: para,
-            subject: validarAsunto(tipoNotificacion),
-            html: validarNotificacion(tipoNotificacion, cargaUtil)
-        })
-        console.log("Mensaje enviado con el id: " + info.messageId)
-        return info.messageId
-    } catch (error) {
-        console.log(error + "")
-    }
+    correo(async function (transporter) {
+        try {
+            const info = await transporter.sendMail({
+                from: comunes.DE,
+                to: para,
+                subject: validarAsunto(tipoNotificacion),
+                html: validarNotificacion(tipoNotificacion, cargaUtil)
+            })
+            console.log("Mensaje enviado con el id: " + info.messageId)
+            return info.messageId
+        } catch (error) {
+            console.log(error + "")
+        }
+    })
 }
 
 /*
