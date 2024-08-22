@@ -28,7 +28,7 @@ exports.ntfRecuperacion = (req, res) => {
 
 exports.ntfServicio = (req, res) => {
     notificacion
-        .enviarCorreo(comunes.PARA_RP, 2, req.body)
+        .enviarCorreo(req.body.para, 2, req.body)
         .then(() => {
             return res.send(comunes.respuestaGenerica())
         })

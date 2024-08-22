@@ -24,7 +24,7 @@ module.exports = {
 	TITULOS: 'ESTADO;DETALLE;DOCUMENTO;SUBCONTRATO;MES;AÑO;VALOR',
 	SIN_REGISTROS: 'Archivo vacio sin registros',
 	//CONSTANTES DE CORREO
-	DE: 'info@coboy.com.co',
+	DE: 'hydra@gottwesen.co',
 	ASUNTO_PR: '¡Se ha creado un nuevo pre registro!',
 	ASUNTO_CS: '¡Se ha creado un nuevo servicio!',
 	ASUNTO_ANS: '¡Recordatorio atención de servicio!',

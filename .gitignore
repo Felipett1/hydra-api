@@ -1,1 +1,5 @@
 .env
+# Node
+/node_modules
+
+account_transport.json
