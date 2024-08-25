@@ -37,7 +37,7 @@ exports.mensaje = (datos) => {
 																					<table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 																						<tr style="border-collapse:collapse">
 																							<td class="es-infoblock es-m-txt-c" align="left" style="padding:0;Margin:0;line-height:14px;font-size:12px;color:#CCCCCC">
-																								<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica\ neue', helvetica, sans-serif;line-height:14px;color:#CCCCCC;font-size:12px">Put your preheader text here<br/>
+																								<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica\ neue', helvetica, sans-serif;line-height:14px;color:#CCCCCC;font-size:12px">${datos.tipo_servicio}<br/>
 																								</td>
 																							</tr>
 																						</table>
@@ -53,7 +53,6 @@ exports.mensaje = (datos) => {
 																							<tr style="border-collapse:collapse">
 																								<td align="right" class="es-infoblock es-m-txt-c" style="padding:0;Margin:0;line-height:14px;font-size:12px;color:#CCCCCC">
 																									<p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:14px;color:#CCCCCC;font-size:12px">
-																										<a href="https://viewstripo.email" target="_blank" class="view" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px;font-family:arial, 'helvetica neue', helvetica, sans-serif">View in browser</a>
 																									</p>
 																								</td>
 																							</tr>
@@ -184,10 +183,10 @@ exports.mensaje = (datos) => {
 																								</tr>
 																								<tr style="border-collapse:collapse">
 																									<td align="center" style="padding:0;Margin:0;padding-bottom:15px;padding-top:30px">
-																										<!--[if mso]><a href="https://viewstripo.email" target="_blank" hidden> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="https://viewstripo.email" style="height:48px; v-text-anchor:middle; width:139.5px" arcsize="31%" stroke="f" fillcolor="#50a3af"> <w:anchorlock></w:anchorlock> <center style='color:#ffffff; font-family:"open sans", "helvetica neue", helvetica, arial, sans-serif; font-size:17px; font-weight:400; line-height:17px; mso-text-raise:1px'>Comunicarse con el cliente</center> </v:roundrect></a><![endif]-->
+																										<!--[if mso]><a href="https://api.whatsapp.com/send?phone=57${datos.contacto}" target="_blank" hidden> <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="https://api.whatsapp.com/send?phone=57${datos.contacto}" style="height:48px; v-text-anchor:middle; width:139.5px" arcsize="31%" stroke="f" fillcolor="#50a3af"> <w:anchorlock></w:anchorlock> <center style='color:#ffffff; font-family:"open sans", "helvetica neue", helvetica, arial, sans-serif; font-size:17px; font-weight:400; line-height:17px; mso-text-raise:1px'>Comunicarse con el usuario</center> </v:roundrect></a><![endif]-->
 																										<!--[if !mso]><!-- -->
 																										<span class="msohide es-button-border" style="border-style:solid;border-color:transparent;background:#50a3af;border-width:0px;display:inline-block;border-radius:15px;width:auto;mso-hide:all">
-																											<a href="https://viewstripo.email" class="es-button es-button-1670028511777 msohide" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#ffffff;font-size:18px;border-style:solid;border-color:#50a3af;border-width:10px 20px 10px 10px;display:inline-block;background:#50a3af;border-radius:15px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;mso-hide:all">
+																											<a href="https://api.whatsapp.com/send?phone=57${datos.contacto}" class="es-button es-button-1670028511777 msohide" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#ffffff;font-size:18px;border-style:solid;border-color:#50a3af;border-width:10px 20px 10px 10px;display:inline-block;background:#50a3af;border-radius:15px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;mso-hide:all">
 																												<img src="https://zluqpe.stripocdn.email/content/guids/CABINET_c1cd551d45b343347d6efa6b89da135b/images/logo_whatsappremovebgpreview.png" alt="icon" align="absmiddle" width="51" style="display:inline-block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;vertical-align:middle;margin-right:1px">Comunicarse con el usuario</a>
 																											</span>
 																											<!--<![endif]-->
