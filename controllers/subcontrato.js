@@ -315,6 +315,11 @@ exports.validarEstado = async (subcontrato, fecha, valor) => {
 
 exports.logicaEstado = async (id) => {
     var subcontrato = id
+    //Consulta si presenta un pago anticipado
+    let anticipado = await mPago.consultarPagoConAnticipado(subcontrato);
+    if (anticipado) {
+        return false
+    }
     //Consulta el valor plan a la fecha
     let novedadSubcontrato = await mNovedadSubContrato.consultarUltimaNovedad(subcontrato, new Date())
     //Consultar valor del beneficiario, mascota adicional y fecha inicio contrato
